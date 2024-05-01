@@ -1,5 +1,6 @@
 import React from "react";
 import {Table} from "react-bootstrap";
+import "./Table.css"
 
 const daysOfWeek = ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'];
 const weeks = ['Четная', 'Нечетная'];
@@ -24,7 +25,7 @@ const GeneralTable = () =>{
                                                 {index2 === 0 && <td rowSpan="2">{day}</td>}
                                                 <td>{week}</td>
                                                 {lessons.map((lesson, index3) => (
-                                                    <td key={index3}> {/* Здесь будет ваше расписание */index3+1+" "+(index+1)+" "+(index2)} </td>
+                                                    <td key={index3} className="hoverable"> {/* Здесь будет расписание */index3+1+" "+(index+1)+" "+(index2)} </td>
                                                 ))}
                                             </tr>
                                         ))

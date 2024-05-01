@@ -8,7 +8,18 @@ import Button from 'react-bootstrap/Button';
 const SideBar = observer(() => {
     const { view } = useContext(Context);
     const { day } = useContext(Context);
+    const {week} = useContext(Context);
+    const {aud} = useContext(Context);
+    const {startDate} = useContext(Context);
+
+
+    const auditoriums = ['1-203а', '1-203б', '1-204', '1-208a', '1-208б'];
     const daysOfWeek = ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'];
+    const weeks = Array.from({length: 18}, (_, i) => i + 1); // Создает массив от 1 до 18
+
+    let currentDate = new Date(startDate.startDate); 
+    currentDate.setDate(startDate.startDate.getDate()+7*(week.numberOfWeek-1)-startDate.startDate.getDay()+daysOfWeek.indexOf(day.dayOfWeek)+1); 
+
     const handleChange = (event) => {
         view.setScheduleView(event.target.value);
     };
@@ -55,7 +66,33 @@ const SideBar = observer(() => {
                 view.scheduleView === "по дням"?
                 <div>
                 <h6 style={{textAlign: "center"}}>№ Аудитории</h6>
+                <div className="d-flex justify-content-center">
+                    <Dropdown as={ButtonGroup} >
+                        <Button variant="" style={{outline: '1px solid #000'}}>{aud.numberOfAud}</Button>
+                        <Dropdown.Toggle split variant="secondary" id="dropdown-custom-2" style={{outline: '1px solid #000'}}/>
+                        <Dropdown.Menu className="super-colors" >
+                            {auditoriums.map((NumberOfAud, index) => (
+                                <Dropdown.Item key={index} onClick={() => aud.setNumberOfAud(NumberOfAud)}>
+                                    {NumberOfAud}
+                                </Dropdown.Item>
+                            ))}
+                        </Dropdown.Menu>
+                    </Dropdown>
+                </div>
                 <h6 style={{textAlign: "center"}}>№ Недели</h6>
+                <div className="d-flex justify-content-center">
+                    <Dropdown as={ButtonGroup} >
+                        <Button variant="" style={{outline: '1px solid #000'}}>{week.numberOfWeek}</Button>
+                        <Dropdown.Toggle split variant="secondary" id="dropdown-custom-2" style={{outline: '1px solid #000'}}/>
+                        <Dropdown.Menu className="super-colors" >
+                            {weeks.map((NumberOfWeek, index) => (
+                                <Dropdown.Item key={index} onClick={() => week.setNumberOfWeek(NumberOfWeek)}>
+                                    {NumberOfWeek}
+                                </Dropdown.Item>
+                            ))}
+                        </Dropdown.Menu>
+                    </Dropdown>
+                </div>
                 </div>
                 :
                 view.scheduleView === "по аудиториям"?
@@ -76,7 +113,21 @@ const SideBar = observer(() => {
                     </Dropdown>
                 </div>
                 <h6 style={{textAlign: "center",marginTop: '5px'}}>№ Недели</h6>
+                <div className="d-flex justify-content-center">
+                    <Dropdown as={ButtonGroup} >
+                        <Button variant="" style={{outline: '1px solid #000'}}>{week.numberOfWeek}</Button>
+                        <Dropdown.Toggle split variant="secondary" id="dropdown-custom-2" style={{outline: '1px solid #000'}}/>
+                        <Dropdown.Menu className="super-colors" >
+                            {weeks.map((NumberOfWeek, index) => (
+                                <Dropdown.Item key={index} onClick={() => week.setNumberOfWeek(NumberOfWeek)}>
+                                    {NumberOfWeek}
+                                </Dropdown.Item>
+                            ))}
+                        </Dropdown.Menu>
+                    </Dropdown>
+                </div>
                 <h6 style={{textAlign: "center",marginTop: '5px'}} >Дата</h6>
+                <label style={{ display: 'block', textAlign: 'center' }}>{currentDate.toLocaleDateString()}</label>
                 </div>
                 :
                 <div> </div>

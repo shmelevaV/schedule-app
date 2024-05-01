@@ -2,9 +2,10 @@ import React, { useContext } from "react";
 import {Routes, Route} from 'react-router-dom'
 import { adminRoutes, authRoutes, publicRoutes} from "../routes";
 import Schedule from "../pages/Schedule";
+import {observer} from "mobx-react-lite";
 import { Context } from "../index";
 
-const AppRouter = () =>{
+const AppRouter = observer(() =>{
     
     const {user} = useContext(Context)
     console.log(user)
@@ -24,6 +25,6 @@ const AppRouter = () =>{
         <Route path="*" element={<Schedule/>}/>
     </Routes>
     );
-};
+});
 
 export default AppRouter;
