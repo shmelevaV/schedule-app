@@ -10,14 +10,13 @@ const UserAcc = sequelize.define('user_acc',{
 
 const TeacherList = sequelize.define('teacher_list',{
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
-    surname:{type: DataTypes.STRING},
-    name:{type: DataTypes.STRING},
-    patronymic:{type: DataTypes.STRING},
+    surname_N_P:{type: DataTypes.STRING},
 })
 
 const PositionList = sequelize.define('position_list',{
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     name:{type: DataTypes.STRING, unique: true},
+    short_name:{type: DataTypes.STRING},
 })
 
 const DepartmentList = sequelize.define('department_list',{
@@ -28,6 +27,7 @@ const DepartmentList = sequelize.define('department_list',{
 const DisciplineList = sequelize.define('discipline_list',{
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     name:{type: DataTypes.STRING, unique: true},
+    short_name:{type: DataTypes.STRING},
 })
 
 const GroupList = sequelize.define('group_list',{
@@ -46,6 +46,7 @@ const ClassSchedule = sequelize.define('class_schedule',{
     number:{type: DataTypes.INTEGER}, //номер пары
     firstDate:{type: DataTypes.DATEONLY}, //дата первого занятия
     period:{type: DataTypes.INTEGER}, //периодиность занятия
+    lastDate:{type: DataTypes.DATEONLY}, //дата последнего занятия
 })
 
 const RequestList = sequelize.define('request_list',{
@@ -54,6 +55,7 @@ const RequestList = sequelize.define('request_list',{
     submissionDate:{type: DataTypes.DATEONLY}, //дата подачи заявки
     firstDate:{type: DataTypes.DATEONLY}, //дата первого занятия
     period:{type: DataTypes.INTEGER}, //периодиность занятия
+    lastDate:{type: DataTypes.DATEONLY}, //дата последнего занятия
     status:{type: DataTypes.STRING},
 })
 
