@@ -15,8 +15,8 @@ const SideBar = observer(() => {
 
     const auditoriums = ['1-203а', '1-203б', '1-204', '1-208a', '1-208б'];
     const daysOfWeek = ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'];
-    const weeks = Array.from({length: 18}, (_, i) => i + 1); // Создает массив от 1 до 18
-
+    const weeks = Array.from({length: 18}, (_, i) => i + 1); 
+    
     let currentDate = new Date(startDate.startDate); 
     currentDate.setDate(startDate.startDate.getDate()+7*(week.numberOfWeek-1)-startDate.startDate.getDay()+daysOfWeek.indexOf(day.dayOfWeek)+1); 
 

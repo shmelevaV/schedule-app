@@ -1,18 +1,50 @@
 const ApiError = require('../error/ApiError')
+const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
+const {UserAcc} = require('../models/models')
+
+const generateJwt = (id, login, role, teacherListId) =>{
+    return jwt.sign(
+        {id, login, role, teacherListId},
+        process.env.SECRET_KEY,
+        {expiresIn: '24h'}
+    )
+
+}
 
 class UserController{
-    async registration(req,res){
+    async registration(req,res,next){
+        const {login,password,role}=req.body //сюда добавить teacherID если делать
 
+        if(!login || !password){
+            return next(ApiError.badRequest('Неверный email или password'))
+        }
+        const candidate = await UserAcc.findOne({where: {login}})
+        if(candidate){
+            return next(ApiError.badRequest('Пользователь с таким email уже существует'))
+        }
+        const hashPassword = await bcrypt.hash(password,5)
+        let teacherListId=1;// надо создать
+        const user = await UserAcc.create({login,password: hashPassword,role,teacherListId})
+        const token = generateJwt(user.id, user.login, user.role, user.teacherListId)
+        return res.json({token})
     }
-    async login(req,res){
-
+    async login(req,res, next){
+        const {login, password}=req.body
+        const user = await UserAcc.findOne({where: {login}})
+        if (!user){
+            return next(ApiError.internal('Пользователь не найден'))
+        }
+        let comparePassword = bcrypt.compareSync(password,user.password)
+        if (!comparePassword){
+            return next(ApiError.internal('Указан неверный пароль'))
+        }
+        const token = generateJwt(user.id, user.login, user.role, user.teacherListId)
+        return res.json({token})
     }
     async check(req,res, next){
-        const {id} = req.query
-        if(!id){
-            return next(ApiError.badRequest('Не задан ID'))
-        }
-        res.json(id)
+        const token = generateJwt(req.user.id,req.user.login,req.user.role, req.user.teacherListId)
+        return res.json({token})
     }
 }
 

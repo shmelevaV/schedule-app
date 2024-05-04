@@ -1,10 +1,12 @@
 import React from "react";
+import RequestTable from "../components/RequestTable";
+import { Container } from "react-bootstrap";
 
 const MyRequests = () =>{
     return (
-    <div>
-        MYREQ
-    </div>
+        <Container className="mt-3">
+        <RequestTable/>
+        </Container>
     );
 };
 
