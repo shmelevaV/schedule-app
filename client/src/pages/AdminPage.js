@@ -1,10 +1,12 @@
 import React from "react";
+import AdminRequestTable from "../components/AdminRequestTable";
+import { Container } from "react-bootstrap";
 
 const AdminPage = () =>{
     return (
-    <div>
-        ADMINPAGE
-    </div>
+        <Container className="mt-3">
+        <AdminRequestTable/>
+        </Container>
     );
 };
 

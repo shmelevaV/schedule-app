@@ -1,26 +1,41 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Button, Card, Col, Container, Form, Row } from "react-bootstrap";
-import { NavLink, useLocation } from "react-router-dom";
-import { LOGIN_ROUTE, REGISTRATION_ROUTE } from "../utils/consts";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
+import { LOGIN_ROUTE, REGISTRATION_ROUTE, SCHEDULE_ROUTE } from "../utils/consts";
 import { logIn, registration } from "../http/userAPI";
+import {observer} from "mobx-react-lite"
+import {Context} from "../index"
 
 
-const Auth = () =>{
+const Auth = observer (() =>{
 
+    const {user}=useContext(Context)
     const location = useLocation()
+    const navigate = useNavigate()
     const isLogin = location.pathname === LOGIN_ROUTE
     const [login, setLogin] = useState('')
     const [password, setPassword] = useState('')
     const click = async () =>{
+        try{       
+            let data;
+            if(isLogin){
+                data = await logIn(login, password)
+            }else{
+                data = await registration(login, password, 1)
+            }
+            user.setUser(user)
+    
+            console.log(data.role)
+            if(data.role === "ADMIN"){
+                user.setIsAuth(2)
+            }else if(data.role === "USER"){
+                user.setIsAuth(1)
+            }
+            navigate(SCHEDULE_ROUTE)
 
-        if(isLogin){
-            const response = await logIn()
-        }else{
-            const response = await registration(login, password, 1)
-            console.log(response)
+        }catch(e){
+            alert(e.response.data.message)
         }
- 
-
     }
 
     return (
@@ -42,6 +57,7 @@ const Auth = () =>{
             placeholder="Введите ваш пароль"
             value = {password}
             onChange={e => setPassword(e.target.value)}
+            type="password"
         />
         <Row className="mt-3">
             {isLogin ?
@@ -69,6 +85,6 @@ const Auth = () =>{
 
     </Container>
     );
-};
+});
 
 export default Auth;

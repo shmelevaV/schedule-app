@@ -56,8 +56,10 @@ const Schedule = observer(() => {
                     {scheduleTable}
                    
                     {
-                        view.scheduleView === "по дням"?
-                        <>
+                        view.scheduleView === "общий"?
+                        ""
+                        :
+                                              <>
                         <h3 style={{textAlign: "center"}}>№ Недели</h3>
                         <div style={{display: 'flex', justifyContent: 'center'}}>
                             <Button variant="secondary" disabled={week.numberOfWeek <= 1} onClick={() => week.setNumberOfWeek(week.numberOfWeek - 1)} style={{marginRight: '10px'}}>Предыдущая</Button>
@@ -65,8 +67,6 @@ const Schedule = observer(() => {
                             <Button variant="secondary" disabled={week.numberOfWeek >= 18} onClick={() => week.setNumberOfWeek(week.numberOfWeek + 1)} style={{marginLeft: '10px'}}>Следующая</Button>
                         </div>
                     </>
-                        :
-                        ""
                     }
                 
                 </Col>

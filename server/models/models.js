@@ -38,7 +38,7 @@ const GroupList = sequelize.define('group_list',{
 const AuditoriumList = sequelize.define('auditorium_list',{
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     number:{type: DataTypes.STRING, unique: true}, // номер аудитории
-    сapacity:{type: DataTypes.INTEGER}, //вместимость //уточнить notnull
+    capacity:{type: DataTypes.INTEGER}, //вместимость 
 })
 
 const ClassSchedule = sequelize.define('class_schedule',{

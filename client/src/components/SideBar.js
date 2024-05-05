@@ -1,9 +1,10 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { Context } from "../index"; 
 import Dropdown from 'react-bootstrap/Dropdown';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import Button from 'react-bootstrap/Button';
+import { getAuds } from "../http/audAPI";
 
 const SideBar = observer(() => {
     const { view } = useContext(Context);
@@ -13,10 +14,19 @@ const SideBar = observer(() => {
     const {startDate} = useContext(Context);
 
 
-    const auditoriums = ['1-203а', '1-203б', '1-204', '1-208a', '1-208б'];
+
     const daysOfWeek = ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'];
     const weeks = Array.from({length: 18}, (_, i) => i + 1); 
-    
+
+    const [auditoriums, setAuditoriums] = useState([]);
+    useEffect(() => {
+        const fetchData = async () => {
+            const data = await getAuds();
+            setAuditoriums(data.map(aud => aud.number));
+        };
+        fetchData();
+    }, []);
+
     let currentDate = new Date(startDate.startDate); 
     currentDate.setDate(startDate.startDate.getDate()+7*(week.numberOfWeek-1)-startDate.startDate.getDay()+daysOfWeek.indexOf(day.dayOfWeek)+1); 
 

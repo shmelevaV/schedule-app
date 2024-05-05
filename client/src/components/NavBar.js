@@ -13,25 +13,30 @@ const NavBar = observer(() => {
     const {user} = useContext(Context)
     const navigate = useNavigate()
 
+    const logOut= () => {
+      user.setUser({})
+      user.setIsAuth(0)
+    }
+
     return(
         <Navbar bg="primary" data-bs-theme="dark">
          <Container>
             <NavLink  style = {{color:'white'}} to = {SCHEDULE_ROUTE}>Главная</NavLink>
         {user.isAuth === 0 ?
           <Nav className="ml-auto">
-            <Button variant={"outline-light"} onClick ={() => {user.setIsAuth(2);navigate(LOGIN_ROUTE)}}>Авторизация</Button>
+            <Button variant={"outline-light"} onClick ={() => {navigate(LOGIN_ROUTE)}}>Авторизация</Button>
           </Nav>
           :
           user.isAuth === 1 ?
           <Nav className="ml-auto">
           <Button variant={"outline-light"} style={{ marginLeft: '0.5rem' }} onClick ={() => navigate(REQUESTS_ROUTE)}>Мои заявки</Button>
-          <Button variant={"outline-light"} style={{ marginLeft: '0.5rem' }} onClick ={() => {user.setIsAuth(0);navigate(LOGIN_ROUTE)}}>Выйти</Button>
+          <Button variant={"outline-light"} style={{ marginLeft: '0.5rem' }} onClick ={() => logOut()}>Выйти</Button>
           </Nav>
           :
           <Nav className="ml-auto">
           <Button variant={"outline-light"} style={{ marginLeft: '0.5rem' }} onClick ={() => navigate(REQUESTS_ROUTE)}>Мои заявки</Button>
           <Button variant={"outline-light"} style={{ marginLeft: '0.5rem' }} onClick ={() => navigate(ADMIN_ROUTE)}>Админ панель</Button>
-          <Button variant={"outline-light"} style={{ marginLeft: '0.5rem' }} onClick ={() => {user.setIsAuth(0);navigate(LOGIN_ROUTE)}} >Выйти</Button>
+          <Button variant={"outline-light"} style={{ marginLeft: '0.5rem' }} onClick ={() => logOut()} >Выйти</Button>
           </Nav>
         }
          </Container>
