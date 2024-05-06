@@ -11,9 +11,6 @@ const AppRouter = observer(() =>{
     console.log(user)
     return (
     <Routes>
-        {user.isAuth === 2 && adminRoutes.map(({path, Component}) => 
-        <Route key={path} path={path} element={<Component/>} exact/>
-        )}
 
         {user.isAuth > 0 && authRoutes.map(({path, Component}) => 
         <Route key={path} path={path} element={<Component/>} exact/>
@@ -22,6 +19,10 @@ const AppRouter = observer(() =>{
         {publicRoutes.map(({path, Component}) => 
         <Route key={path} path={path} element={<Component/>} exact/>
         )}
+        {user.isAuth === 2 && adminRoutes.map(({path, Component}) => 
+        <Route key={path} path={path} element={<Component/>} exact/>
+        )}
+
         <Route path="*" element={<Schedule/>}/>
     </Routes>
     );

@@ -15,7 +15,10 @@ export const logIn = async (login, password)=>{
 }
 
 export const check = async ()=>{
+    try{
     const {data} = await $authHost.get('api/user/auth')
     localStorage.setItem('token', data.token)
     return jwtDecode(data.token)
+    }catch(e){
+    }
 }

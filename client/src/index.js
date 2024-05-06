@@ -21,9 +21,7 @@ root.render(
     aud: new NumberOfAudStore(),
     startDate: new StartDateStore(),
   }}>
-  <React.StrictMode>
     <App />
-  </React.StrictMode>
   </Context.Provider>
 );
 
