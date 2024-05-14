@@ -1,3 +1,7 @@
+.hoverable {
+    transition: background-color 0.1s ease;
+}
+
 .hoverable:hover {
-    background-color: #c0d4f1; /* Измените этот цвет на желаемый */
+    outline: 2px solid #3a98f6; 
 }

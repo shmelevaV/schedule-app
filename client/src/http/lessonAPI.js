@@ -13,7 +13,13 @@ export const getLessons = async ( start_date,weekNumber, dayOfWeek)=>{
     return data
 }
 
-export const getLessons2 = async ( )=>{
+export const getReqLessons = async ()=>{
+
+    const {data} = await $host.get('api/request');
+    return data
+}
+
+export const getLessons2 = async ()=>{
     const {data} = await $host.get('api/schedule/tbd');
     return data
 }
