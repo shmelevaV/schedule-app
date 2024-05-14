@@ -1,19 +1,57 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {Table, Modal, Button, Form} from "react-bootstrap";
 import './Table.css'; 
+import { Context } from "../index"; 
+import { getLessons2 } from "../http/lessonAPI";
 
 const TableByDays = () => {
     const daysOfWeek = ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'];
     const lessons = ['1 пара', '2 пара', '3 пара', '4 пара', '5 пара', '6 пара'];    
-
+    const {aud} = useContext(Context);
+    const {week} = useContext(Context);
     const [show, setShow] = useState(false);
     const [selectedCell, setSelectedCell] = useState(null);
+    const {startDate} = useContext(Context);
+    const { day } = useContext(Context);
 
     const handleClose = () => setShow(false);
     const handleShow = (day, lesson) => {
         setSelectedCell({ day, lesson });
         setShow(true);
     };
+    const [schedule, setSchedule] = useState([]); // Добавляем состояние для расписания
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const scheduleData = await getLessons2();
+            setSchedule(scheduleData); // Устанавливаем расписание
+        };
+        fetchData();
+
+    }, [week.numberOfWeek,aud.numberOfAud]);
+
+    const getlesn = (dayOfWeek,nOfPair,schedule)=>{
+
+        for(let i=0;i<schedule.length;i++){
+            if(schedule[i].number ===nOfPair){
+                if(schedule[i].auditorium_list.number===aud.numberOfAud){
+                    let currentDate = new Date(startDate.startDate); 
+                    currentDate.setDate(startDate.startDate.getDate() + 7 * (week.numberOfWeek - 1) - startDate.startDate.getDay() + dayOfWeek + 1);
+                    let tempDate = new Date(schedule[i].firstDate);
+                    let tempLastDate = new Date(schedule[i].lastDate);
+                    tempDate.setDate(tempDate.getDate());
+                   
+                    for(let j = 0; tempDate <= tempLastDate; j++){
+                       if(currentDate.toLocaleDateString()===tempDate.toLocaleDateString()){
+                           return (schedule[i].discipline_list.short_name + " " + schedule[i].group_list.name) 
+                       }
+                       tempDate.setDate(tempDate.getDate() + 7 * schedule[i].period);
+                    }
+                }
+            }
+        }
+        return ""
+    }
 
     return (
         <>
@@ -32,8 +70,9 @@ const TableByDays = () => {
                             <td>{day}</td>
                             {lessons.map((lesson, index2) => (
                                 <td key={index2} className="hoverable" onClick={() => handleShow(day, lesson)}>
-                                    {/* Здесь будет расписание */}
-                                    {index + " "+ index2}
+                                {
+                               getlesn(index,index2+1,schedule)
+                                }
                                 </td>
                             ))}
                         </tr>

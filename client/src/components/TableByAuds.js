@@ -4,6 +4,7 @@ import './Table.css';
 import { Context } from "../index"; 
 import { getAuds} from "../http/audAPI";
 import { getLessons} from "../http/lessonAPI";
+import EditCellModal from "./Modal";
 
 const TableByAuds = () => {
     const lessons = ['1 пара', '2 пара', '3 пара', '4 пара', '5 пара', '6 пара'];    
@@ -31,6 +32,7 @@ const TableByAuds = () => {
         };
         fetchData();
     }, [week.numberOfWeek, day.dayOfWeek]);
+
     const getSelectedSchedule = () => {
         if (selectedCell) {
             const selectedLessonNumber = lessons.indexOf(selectedCell.lesson) + 1;
@@ -38,6 +40,7 @@ const TableByAuds = () => {
         }
         return null;
     }
+
     const getlesn = (aud,nOfPair,schedule)=>{
         schedule.find(item => item.number === nOfPair)
         for(let i=0;i<schedule.length;i++){
@@ -77,41 +80,13 @@ const TableByAuds = () => {
                 ))}
             </tbody>
         </Table>
+        <EditCellModal
+            show={show}
+            handleClose={handleClose}
+            selectedCell={selectedCell}
+            getSelectedSchedule={getSelectedSchedule}
+        />
 
-        <Modal show={show} onHide={handleClose}>
-            <Modal.Header closeButton>
-                <Modal.Title>Редактирование ячейки</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-                <Form>
-                    <Form.Group className="mb-3">
-                        <Form.Label>Занятие в аудитории {selectedCell?.aud}, {selectedCell?.lesson}</Form.Label>
-                        {
-                            getSelectedSchedule() ? (
-                                <>
-                                    <Form.Control type="text" value={week.numberOfWeek} />
-                                    <Form.Control type="text" value={day.dayOfWeek} />
-                                    <Form.Control type="text" value="Дата" />
-                                    <Form.Control type="text" value={getSelectedSchedule().discipline_list.short_name} />
-                                    <Form.Control type="text" value={getSelectedSchedule().teacher_list.surname_N_P}/>
-                                    <Form.Control type="text" value={getSelectedSchedule().group_list.name} />
-                                </>
-                            ) : (
-                                <p>Нет данных для выбранной ячейки</p>
-                            )
-                        }
-                    </Form.Group>
-                </Form>
-            </Modal.Body>
-            <Modal.Footer>
-                <Button variant="secondary" onClick={handleClose}>
-                    Закрыть
-                </Button>
-                <Button variant="primary" onClick={handleClose}>
-                    Сохранить изменения
-                </Button>
-            </Modal.Footer>
-        </Modal>
         </>
     );
 };

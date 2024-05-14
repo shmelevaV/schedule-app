@@ -63,6 +63,33 @@ for (let j = 0; j < schedule.length; j++) {
 return res.json(result);
 
     }
+    async getAll2(req, res) {
+
+        const schedule = await ClassSchedule.findAll({
+
+            include: [{
+                model: AuditoriumList,
+                attributes: ['number'], // указываем, что хотим включить только поле 'number'
+            },
+            {
+                model: DisciplineList,
+                attributes: ['short_name'], // указываем, что хотим включить только поле 'name'
+            },
+            {
+                model: TeacherList,
+                attributes: ['surname_N_P'], // указываем, что хотим включить только поле 'name'
+            },
+            {
+                model: GroupList,
+                attributes: ['name'], // указываем, что хотим включить только поле 'name'
+            }
+    ]
+        });
+   
+
+return res.json(schedule);
+
+    }
 }
 
 module.exports = new scheduleController()

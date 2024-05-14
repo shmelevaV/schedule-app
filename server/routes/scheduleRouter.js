@@ -5,5 +5,6 @@ const checkRole = require('../middleware/checkRoleMiddleware')
 
 router.post('/', scheduleController.create)
 router.get('/', scheduleController.getAll)
+router.get('/tbd', scheduleController.getAll2)
 
 module.exports = router

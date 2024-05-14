@@ -3,7 +3,6 @@ import { jwtDecode } from "jwt-decode";
 
 export const getLessons = async ( start_date,weekNumber, dayOfWeek)=>{
 
-    let st="2024-02-05";
     const {data} = await $host.get('api/schedule', {
         params: {
             start_date: start_date,
@@ -11,6 +10,10 @@ export const getLessons = async ( start_date,weekNumber, dayOfWeek)=>{
             dayOfWeek: dayOfWeek
         }
     });
-    console.log(data)
+    return data
+}
+
+export const getLessons2 = async ( )=>{
+    const {data} = await $host.get('api/schedule/tbd');
     return data
 }
