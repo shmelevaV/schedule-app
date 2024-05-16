@@ -52,18 +52,6 @@ const SideBar = observer(() => {
                 <label>
                     <input
                         type="radio"
-                        value="по дням"
-                        checked={view.scheduleView === "по дням"}
-                        onChange={handleChange}
-                        style={{marginRight: '5px'}}
-                    />
-                     По дням
-                </label>
-            </div>
-            <div>
-                <label>
-                    <input
-                        type="radio"
                         value="по аудиториям"
                         checked={view.scheduleView === "по аудиториям"}
                         onChange={handleChange}
@@ -72,6 +60,19 @@ const SideBar = observer(() => {
                     По аудиториям
                 </label>
             </div>
+            <div>
+                <label>
+                    <input
+                        type="radio"
+                        value="по дням"
+                        checked={view.scheduleView === "по дням"}
+                        onChange={handleChange}
+                        style={{marginRight: '5px'}}
+                    />
+                     По дням
+                </label>
+            </div>
+
             {
                 view.scheduleView === "по дням"?
                 <div>

@@ -1,8 +1,20 @@
-import React, { useState } from "react";
-import {Table, Modal, Button, Form} from "react-bootstrap";
-import './Table.css'; 
+import React, { useEffect, useState } from "react";
+import {Table, Button} from "react-bootstrap";
+import { getReqLessons } from "../http/lessonAPI";
 
 const RequestTable = () => {
+
+    const [scheduleReq, setScheduleReq] = useState([]);
+
+    const fetchData = async () => {
+        const scheduleDataReq = await getReqLessons();
+        setScheduleReq(scheduleDataReq);
+    };
+
+    useEffect(() => {
+        fetchData();
+    }, []);
+
     return (
         <>
             <Table striped bordered hover>
@@ -22,19 +34,21 @@ const RequestTable = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>01.01.2024</td>
-                        <td>1-204</td>
-                        <td>3</td>
-                        <td>02.01.2024</td>
-                        <td>Иванов И.И.</td>
-                        <td>2</td>
-                        <td>Математика</td>
-                        <td>ПМИ-02</td>
-                        <td>На рассмотрении</td>
-                        <td><Button variant="danger">Отменить заявку</Button></td>
-                    </tr>
+                    {scheduleReq.map((item, index) => (
+                        <tr key={index}>
+                            <td>{item.id}</td>
+                            <td>{new Date(item.submissionDate).toLocaleDateString()}</td>
+                            <td>{item.auditorium_list.number}</td>
+                            <td>{item.number}</td>
+                            <td>{new Date(item.firstDate).toLocaleDateString()}</td>
+                            <td>{item.teacher_list.surname_N_P}</td>
+                            <td>{item.period}</td>
+                            <td>{item.discipline_list.short_name}</td>
+                            <td>{item.group_list.name}</td>
+                            <td>{item.status}</td>
+                            <td><Button variant="danger">Отменить заявку</Button></td>
+                        </tr>
+                    ))}
                 </tbody>
             </Table>
         </>
@@ -42,4 +56,3 @@ const RequestTable = () => {
 };
 
 export default RequestTable;
-

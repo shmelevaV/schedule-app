@@ -7,8 +7,8 @@ export default class NumberOfWeekStore {
         makeAutoObservable(this);
     }
 
-    setNumberOfWeek(day) {
-        this._numberOfWeek = day;
+    setNumberOfWeek(nOfWeek) {
+        this._numberOfWeek = nOfWeek;
     }
     get numberOfWeek(){
         return this._numberOfWeek;

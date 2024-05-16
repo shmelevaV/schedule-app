@@ -3,6 +3,7 @@ import {Table, Modal, Button, Form} from "react-bootstrap";
 import './Table.css'; 
 import { Context } from "../index"; 
 import { getLessons2, getReqLessons } from "../http/lessonAPI";
+import EditCellModal from "./Modal";
 
 const TableByDays = () => {
     const daysOfWeek = ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'];
@@ -19,19 +20,66 @@ const TableByDays = () => {
         setSelectedCell({ day, lesson });
         setShow(true);
     };
+    
     const [schedule, setSchedule] = useState([]); // Добавляем состояние для расписания
     const [scheduleReq, setScheduleReq] = useState([]); // Добавляем состояние для расписания из заявок
+
+    const fetchData = async () => {
+        const scheduleData = await getLessons2();
+        const scheduleDataReq = await getReqLessons();
+        setSchedule(scheduleData); // Устанавливаем расписание
+        setScheduleReq(scheduleDataReq); // Устанавливаем расписание из заявок
+    };
+
     useEffect(() => {
-        const fetchData = async () => {
-            const scheduleData = await getLessons2();
-            const scheduleDataReq = await getReqLessons();
-            setSchedule(scheduleData); // Устанавливаем расписание
-            setScheduleReq(scheduleDataReq); // Устанавливаем расписание из заявок
-        };
+
         fetchData();
 
     }, [week.numberOfWeek,aud.numberOfAud]);
 
+    const getSelectedSchedule = () => {
+        if (selectedCell) {
+            const selectedLessonNumber = lessons.indexOf(selectedCell.lesson) + 1;
+        for(let i=0;i<schedule.length;i++){
+            if(schedule[i].number ===selectedLessonNumber){
+                if(schedule[i].auditorium_list.number===aud.numberOfAud){
+                    let currentDate = new Date(startDate.startDate); 
+                    currentDate.setDate(startDate.startDate.getDate() + 7 * (week.numberOfWeek - 1) - startDate.startDate.getDay() + daysOfWeek.indexOf(selectedCell.day) + 1);
+                    let tempDate = new Date(schedule[i].firstDate);
+                    let tempLastDate = new Date(schedule[i].lastDate);
+                    tempDate.setDate(tempDate.getDate());
+                   
+                    for(let j = 0; tempDate <= tempLastDate; j++){
+                       if(currentDate.toLocaleDateString()===tempDate.toLocaleDateString()){
+                        return schedule[i];
+                       }
+                       tempDate.setDate(tempDate.getDate() + 7 * schedule[i].period);
+                    }
+                }
+            }
+        }
+
+        for(let i=0;i<scheduleReq.length;i++){
+            if(scheduleReq[i].number === selectedLessonNumber){
+                if(scheduleReq[i].auditorium_list.number===aud.numberOfAud){
+                    let currentDate = new Date(startDate.startDate); 
+                    currentDate.setDate(startDate.startDate.getDate() + 7 * (week.numberOfWeek - 1) - startDate.startDate.getDay() + daysOfWeek.indexOf(selectedCell.day) + 1);
+                    let tempDate = new Date(scheduleReq[i].firstDate);
+                    let tempLastDate = new Date(scheduleReq[i].lastDate);
+                    tempDate.setDate(tempDate.getDate());
+                   
+                    for(let j = 0; tempDate <= tempLastDate; j++){
+                       if(currentDate.toLocaleDateString()===tempDate.toLocaleDateString()){
+                            return scheduleReq[i]
+                       }
+                       tempDate.setDate(tempDate.getDate() + 7 * scheduleReq[i].period);
+                    }
+                }
+            }
+        }
+    }
+        return null;
+    } 
     const getlesn = (dayOfWeek,nOfPair,schedule)=>{
 
         for(let i=0;i<schedule.length;i++){
@@ -105,27 +153,13 @@ const TableByDays = () => {
                     ))}
                 </tbody>
             </Table>
-            <Modal show={show} onHide={handleClose}>
-                <Modal.Header closeButton>
-                    <Modal.Title>Редактирование ячейки</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <Form>
-                        <Form.Group className="mb-3">
-                            <Form.Label>Расписание для {selectedCell?.day}, {selectedCell?.lesson}</Form.Label>
-                            <Form.Control type="text" placeholder="Введите расписание" />
-                        </Form.Group>
-                    </Form>
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={handleClose}>
-                        Закрыть
-                    </Button>
-                    <Button variant="primary" onClick={handleClose}>
-                        Сохранить изменения
-                    </Button>
-                </Modal.Footer>
-            </Modal>
+            <EditCellModal
+            show={show}
+            handleClose={handleClose}
+            selectedCell={selectedCell}
+            getSelectedSchedule={getSelectedSchedule}
+            updateSchedule={fetchData}
+        />
         </>
     );
 };

@@ -14,7 +14,7 @@ const generateJwt = (id, login, role, teacherListId) =>{
 
 class UserController{
     async registration(req,res,next){
-        const {login,password,role}=req.body //сюда добавить teacherID если делать
+        const {login,password,role}=req.body 
 
         if(!login || !password){
             return next(ApiError.badRequest('Неверный email или password'))
@@ -24,7 +24,7 @@ class UserController{
             return next(ApiError.badRequest('Пользователь с таким email уже существует'))
         }
         const hashPassword = await bcrypt.hash(password,5)
-        let teacherListId=1;// надо создать
+        let teacherListId=1;
         const user = await UserAcc.create({login,password: hashPassword,role,teacherListId})
         const token = generateJwt(user.id, user.login, user.role, user.teacherListId)
         return res.json({token})

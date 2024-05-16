@@ -7,6 +7,7 @@ import DayOfWeekStore from './store/DayOfWeekStore';
 import NumberOfWeekStore from './store/NumberOfWeekStore';
 import NumberOfAudStore from './store/NumburOfAudStore';
 import StartDateStore from './store/StartDateStore';
+import ActiveTableStore from './store/ActiveTableStore';
 
 export const Context = createContext(null)
 
@@ -19,6 +20,7 @@ root.render(
     week: new NumberOfWeekStore(),
     aud: new NumberOfAudStore(),
     startDate: new StartDateStore(),
+    table: new ActiveTableStore(),
   }}>
     <App />
   </Context.Provider>

@@ -5,6 +5,9 @@ class RequestController{
     async create(req,res){
         const {number,submissionDate,firstDate,period,lastDate,
             status,teacherListId,disciplineListId,groupListId,auditoriumListId} = req.body
+
+        console.log("number= ",number)
+        
         const request = await RequestList.create({number,submissionDate,firstDate,period,lastDate,
             status,teacherListId,disciplineListId,groupListId,auditoriumListId})
         return res.json(request)
