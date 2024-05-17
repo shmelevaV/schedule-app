@@ -35,7 +35,6 @@ const TableByAuds = () => {
     };
 
     useEffect(() => {
-
         fetchData();
     }, [week.numberOfWeek, day.dayOfWeek]);
 

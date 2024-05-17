@@ -5,5 +5,5 @@ const checkRole = require('../middleware/checkRoleMiddleware')
 
 router.post('/', auditoriumController.create)
 router.get('/', auditoriumController.getAll)
-
+router.get('/joined', auditoriumController.getAllJoined)
 module.exports = router

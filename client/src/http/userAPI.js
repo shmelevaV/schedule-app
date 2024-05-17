@@ -14,6 +14,11 @@ export const logIn = async (login, password)=>{
     return jwtDecode(data.token)
 }
 
+export const getUsers = async ()=>{
+    const {data} = await $host.get('api/user')
+    return data
+}
+
 export const check = async ()=>{
     try{
     const {data} = await $authHost.get('api/user/auth')

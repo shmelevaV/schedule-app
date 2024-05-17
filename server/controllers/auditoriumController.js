@@ -1,4 +1,4 @@
-const {AuditoriumList} = require('../models/models')
+const {AuditoriumList, TypeList} = require('../models/models')
 const ApiError = require('../error/ApiError')
 
 class AuditoriumController{
@@ -9,6 +9,17 @@ class AuditoriumController{
     }
     async getAll(req,res){
         const auds = await AuditoriumList.findAll()
+        return res.json(auds)
+    }
+    async getAllJoined(req,res){
+        const auds = await AuditoriumList.findAll({
+
+            include: [{
+                model: TypeList,
+                attributes: ['name'], 
+            },
+            ]
+        });
         return res.json(auds)
     }
     async getOne(req,res){

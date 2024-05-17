@@ -24,7 +24,6 @@ export const getLessons2 = async ()=>{
 
 export const createReqLesson = async (number,submissionDate,firstDate,period,lastDate,
     status,teacherListId,disciplineListId,groupListId,auditoriumListId)=>{
-    console.log("number= ",number) 
     const {data} = await $host.post('api/request', {number,submissionDate,firstDate,period,lastDate,
     status,teacherListId,disciplineListId,groupListId,auditoriumListId});
     return data

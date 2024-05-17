@@ -1,7 +1,7 @@
 const ApiError = require('../error/ApiError')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
-const {UserAcc} = require('../models/models')
+const {UserAcc, TeacherList} = require('../models/models')
 
 const generateJwt = (id, login, role, teacherListId) =>{
     return jwt.sign(
@@ -46,6 +46,20 @@ class UserController{
         const token = generateJwt(req.user.id,req.user.login,req.user.role, req.user.teacherListId)
         return res.json({token})
     }
+
+    async getAll(req,res){
+        const users = await UserAcc.findAll({
+
+            include: [{
+                model: TeacherList,
+                attributes: ['surname_N_P'], // указываем, что хотим включить только поле 'number'
+            },
+    ]
+        });
+   
+        return res.json(users)
+    }
+
 }
 
 module.exports = new UserController()

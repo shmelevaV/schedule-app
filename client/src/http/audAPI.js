@@ -6,3 +6,9 @@ export const getAuds = async ()=>{
     const {data} = await $host.get('api/auditorium')
     return data
 }
+
+export const getJoinedAuds = async ()=>{
+    const {data} = await $host.get('api/auditorium/joined')
+    return data
+}
+
