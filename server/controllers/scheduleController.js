@@ -4,9 +4,9 @@ const { Op } = require('sequelize');
 
 class scheduleController{
     async create(req,res){
-        // const {number,capacity,typeListId} = req.body
-        // const type = await ClassSchedule.create({number,capacity,typeListId})
-        // return res.json(type)
+         const {number,firstDate,period,lastDate,teacherListId,disciplineListId,groupListId,auditoriumListId} = req.body
+         const request = await ClassSchedule.create({number,firstDate,period,lastDate,teacherListId,disciplineListId,groupListId,auditoriumListId})
+        return res.json(request)
     }
     async getAll(req, res) {
         const {  start_date, weekNumber, dayOfWeek } = req.query; //body for POSTMAN
@@ -89,6 +89,23 @@ return res.json(result);
 
 return res.json(schedule);
 
+    }
+
+    async delete(req, res) {
+        const {id} = req.params;
+        if (!id) {
+            return res.status(400).json({message: "ID заявки является обязательным параметром"});
+        }
+
+        const request = await ClassSchedule.findOne({ where: { id } });
+
+        if (!request) {
+            return res.status(404).json({message: "Заявка не найдена"});
+        }
+
+        await request.destroy();
+
+        return res.json({message: "Заявка успешно удалена"});
     }
 }
 

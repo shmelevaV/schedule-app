@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
-import {Table, Button} from "react-bootstrap";
-import { getDisciplines } from "../http/disciplineAPI";
+import {Table, Button, Row, Col} from "react-bootstrap";
+import { deleteDiscipline, getDisciplines } from "../../http/disciplineAPI";
+import CreateDisciplineModal from "../Modals/CreateDiscipline";
 
 const DisciplineTable = () => {
 
@@ -11,12 +12,30 @@ const DisciplineTable = () => {
         setDepartments(departmentData);
     };
 
+    const [showDisciplineModal, setShowDisciplineModal] = useState(false);
+
+    const handleShowDisciplineModal = () => {
+        setShowDisciplineModal(true);
+    };
+
+
     useEffect(() => {
         fetchData();
     }, []);
 
     return (
         <>
+            <Row >
+                <Col md={1}>
+                </Col>
+                <Col md={11} >
+                    <Button variant="primary" onClick={handleShowDisciplineModal}>Добавить дисциплину</Button>
+                </Col>
+            </Row>
+            <Row className="mt-3 ">
+                <Col md={1}>
+                </Col>
+                <Col md={11}>
             <Table striped bordered hover>
                 <thead>
                     <tr>
@@ -32,11 +51,14 @@ const DisciplineTable = () => {
                             <td>{item.id}</td>
                             <td>{item.name}</td>
                             <td>{item.short_name}</td>
-                            <td><Button variant="danger">Удалить</Button></td>
+                            <td><Button variant="danger" onClick={async () => {await deleteDiscipline(item.id);fetchData();}}>Удалить</Button></td>
                         </tr>
                     ))}
                 </tbody>
             </Table>
+            <CreateDisciplineModal show={showDisciplineModal} onHide={() => {setShowDisciplineModal(false);fetchData()}} />
+            </Col>
+            </Row>
         </>
     );
 };

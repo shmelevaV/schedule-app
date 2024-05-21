@@ -1,0 +1,74 @@
+import React, { useEffect, useState } from 'react';
+import { Modal, Button, Form } from 'react-bootstrap';
+import { CreateTeacher } from '../../http/TeacherAPI';
+import { getTypes } from '../../http/typeAPI';
+import { CreateAud } from '../../http/audAPI';
+
+const CreateAudModal = ({show, onHide}) => {
+    const [AudNumber, setAudNumber] = useState('');
+    const [AudCapacity, setAudCapacity] = useState('');
+
+    const [types, setTypes] = useState([]);
+
+    const [selectedType, setSelectedType] = useState(null);
+
+    useEffect(() => {
+        getTypes().then(data => setTypes(data));
+    }, []);
+
+    const handleAudNumberInputChange = (event) => {
+        setAudNumber(event.target.value);
+    };
+    const handleAudCapacityInputChange = (event) => {
+        setAudCapacity(event.target.value);
+    };
+
+    const handleAddClick = async () => {
+        if (AudNumber && AudCapacity && selectedType) {
+            await CreateAud(AudNumber,Number(AudCapacity),selectedType);
+            onHide();
+        }
+        setSelectedType(null);
+        setAudNumber('');
+        setAudCapacity('');
+    };
+
+    return (
+        <Modal show={show} onHide={onHide}>
+            <Modal.Header closeButton>
+                <Modal.Title>Добавить Аудиторию</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+                <Form>
+                    <Form.Group className="mb-3">
+                        <Form.Label style={{fontWeight: "bold"}} className="mt-1">Номер аудитории</Form.Label>
+                        <Form.Control type="text" placeholder="Введите номер аудитории" value={AudNumber} onChange={handleAudNumberInputChange} />
+                    </Form.Group>
+                    <Form.Group className="mb-3">
+                        <Form.Label style={{fontWeight: "bold"}} className="mt-1">Вместимость аудитории</Form.Label>
+                        <Form.Control type="int" placeholder="Введите вместимость аудитории" value={AudCapacity} onChange={handleAudCapacityInputChange} />
+                    </Form.Group>
+                    <Form.Group className="mb-3">
+                        <Form.Label style={{fontWeight: "bold"}} className="mt-1">Тип аудитории</Form.Label>
+                        <Form.Select value={selectedType} onChange={e => setSelectedType(e.target.value)}>
+                            <option value="">Выберите тип аудитории</option>
+                            {types.map(type => (
+                            <option value={type.id}>{type.name}</option>
+                            ))}
+                        </Form.Select>
+                    </Form.Group>
+                </Form>
+            </Modal.Body>
+            <Modal.Footer>
+                <Button variant="secondary" onClick={onHide}>
+                    Закрыть
+                </Button>
+                <Button variant="primary" disabled={!AudNumber || !AudCapacity || !selectedType} onClick={handleAddClick}>
+                    Добавить
+                </Button>
+            </Modal.Footer>
+        </Modal>
+    );
+}
+
+export default CreateAudModal;

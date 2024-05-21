@@ -12,3 +12,12 @@ export const getJoinedAuds = async ()=>{
     return data
 }
 
+export const deleteAud = async (id)=>{
+    const {data} = await $host.delete(`api/auditorium/${id}`);
+    return data
+}
+
+export const CreateAud = async (number, capacity, typeListId)=>{
+    const {data} = await $host.post('api/auditorium ',{number, capacity, typeListId});
+    return data
+}

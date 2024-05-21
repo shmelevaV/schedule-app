@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
-import {Table, Button} from "react-bootstrap";
-import { getTypes } from "../http/typeAPI";
+import {Table, Button, Row, Col} from "react-bootstrap";
+import { deleteType, getTypes } from "../../http/typeAPI";
+import CreateAudType from "../Modals/CreateAudType";
 
 const TypeTable = () => {
 
@@ -10,13 +11,28 @@ const TypeTable = () => {
         const typeData = await getTypes();
         setTypes(typeData);
     };
+    const [showAudTypeModal, setShowAudTypeModal] = useState(false);
 
+    const handleShowAudTypeModal = () => {
+        setShowAudTypeModal(true);
+    };
     useEffect(() => {
         fetchData();
     }, []);
 
     return (
         <>
+        <Row >
+            <Col md={1}>
+            </Col>
+            <Col md={11} >
+                <Button variant="primary" onClick={handleShowAudTypeModal}>Добавить тип</Button>
+            </Col>
+        </Row>
+        <Row className="mt-3 ">
+            <Col md={1}>
+            </Col>
+            <Col md={11} >
             <Table striped bordered hover>
                 <thead>
                     <tr>
@@ -30,11 +46,14 @@ const TypeTable = () => {
                         <tr key={index}>
                             <td>{item.id}</td>
                             <td>{item.name}</td>
-                            <td><Button variant="danger">Удалить</Button></td>
+                            <td><Button variant="danger"  onClick={async () => {await deleteType(item.id);  fetchData();}} >Удалить</Button></td>
                         </tr>
                     ))}
                 </tbody>
             </Table>
+            </Col>
+            <CreateAudType show={showAudTypeModal} onHide={() => {setShowAudTypeModal(false);fetchData()}} />
+            </Row>
         </>
     );
 };

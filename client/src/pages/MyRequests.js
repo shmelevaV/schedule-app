@@ -1,5 +1,5 @@
 import React from "react";
-import RequestTable from "../components/RequestTable";
+import RequestTable from "../components/Tables/RequestTable";
 import { Container } from "react-bootstrap";
 
 const MyRequests = () =>{

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {Table, Button} from "react-bootstrap";
-import { getJoinedAuds } from "../http/audAPI";
-import { getUsers } from "../http/userAPI";
+import { deleteUser, getUsers } from "../../http/userAPI";
 
 const UsersTable = () => {
 
@@ -36,8 +35,8 @@ const UsersTable = () => {
                             <td>{item.login}</td>
                             <td>{item.password}</td>
                             <td>{item.role}</td>
-                            <td>{item.teacher_list.surname_N_P}</td>
-                            <td><Button variant="danger">Удалить</Button></td>
+                            <td>{item.teacher_list&& item.teacher_list.surname_N_P ? item.teacher_list.surname_N_P : 'NULL'}</td>
+                            <td><Button variant="danger" onClick={async () => {await deleteUser(item.id);fetchData();}}>Удалить</Button></td>
                         </tr>
                     ))}
                 </tbody>

@@ -4,5 +4,6 @@ const disciplineController = require('../controllers/disciplineController')
 
 router.post('/', disciplineController.create)
 router.get('/', disciplineController.getAll)
+router.delete('/:id',  disciplineController.delete);
 
 module.exports = router

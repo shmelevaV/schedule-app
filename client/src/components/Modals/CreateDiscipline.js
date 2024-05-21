@@ -1,0 +1,53 @@
+import React, { useState } from 'react';
+import { Modal, Button, Form } from 'react-bootstrap';
+import { CreateDiscipline } from '../../http/disciplineAPI';
+
+const CreateDisciplineModal = ({show, onHide}) => {
+    const [DisciplineName, setDisciplineName] = useState('');
+    const [DisciplineShortName, setDisciplineShortName] = useState('');
+
+    const handleNameInputChange = (event) => {
+        setDisciplineName(event.target.value);
+    };
+
+    const handleShortNameInputChange = (event) => {
+        setDisciplineShortName(event.target.value);
+    };
+
+    const handleAddClick = async () => {
+        if (DisciplineName && DisciplineShortName) {
+            await CreateDiscipline(DisciplineName, DisciplineShortName);
+            onHide();
+        }
+    };
+
+    return (
+        <Modal show={show} onHide={onHide}>
+            <Modal.Header closeButton>
+                <Modal.Title>Добавить дисциплину</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+                <Form>
+                    <Form.Group className="mb-3">
+                        <Form.Label style={{fontWeight: "bold"}} className="mt-1">Название дисциплины</Form.Label>
+                        <Form.Control type="text" placeholder="Введите название дисциплины" value={DisciplineName} onChange={handleNameInputChange} />
+                    </Form.Group>
+                    <Form.Group className="mb-3">
+                        <Form.Label style={{fontWeight: "bold"}} className="mt-1">Краткое название дисциплины</Form.Label>
+                        <Form.Control type="text" placeholder="Введите краткое название дисциплины" value={DisciplineShortName} onChange={handleShortNameInputChange} />
+                    </Form.Group>
+                </Form>
+            </Modal.Body>
+            <Modal.Footer>
+                <Button variant="secondary" onClick={onHide}>
+                    Закрыть
+                </Button>
+                <Button variant="primary" disabled={!DisciplineName || !DisciplineShortName} onClick={handleAddClick}>
+                    Добавить
+                </Button>
+            </Modal.Footer>
+        </Modal>
+    );
+}
+
+export default CreateDisciplineModal;

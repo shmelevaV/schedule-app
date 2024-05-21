@@ -28,3 +28,25 @@ export const createReqLesson = async (number,submissionDate,firstDate,period,las
     status,teacherListId,disciplineListId,groupListId,auditoriumListId});
     return data
 }
+
+export const createLesson = async (number,firstDate,period,lastDate,teacherListId,disciplineListId,groupListId,auditoriumListId)=>{
+    const {data} = await $host.post('api/schedule', {number,firstDate,period,lastDate,teacherListId,disciplineListId,groupListId,auditoriumListId});
+    return data
+}
+
+export const changeReqStatus = async (id,status)=>{
+    const {data} = await $host.put('api/request/status',{id,status});
+    return data
+}
+
+export const deleteReq = async (id)=>{
+    const {data} = await $host.delete(`api/request/${id}`);
+    return data
+}
+
+
+export const deleteLesson = async (id)=>{
+    const {data} = await $host.delete(`api/schedule/${id}`);
+    return data
+}
+

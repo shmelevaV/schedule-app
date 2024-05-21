@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
-import {Table, Button} from "react-bootstrap";
-import { getPositions } from "../http/positionAPI";
+import {Table, Button, Row, Col} from "react-bootstrap";
+import { deletePosition, getPositions } from "../../http/positionAPI";
+import CreatePositionModal from "../Modals/CreatePosition";
 
 const PositionTable = () => {
 
@@ -11,12 +12,29 @@ const PositionTable = () => {
         setDepartments(departmentData);
     };
 
+    const [showPositionModal, setShowPositionModal] = useState(false);
+
+    const handleShowPositionModal = () => {
+        setShowPositionModal(true);
+    };
+
     useEffect(() => {
         fetchData();
     }, []);
 
     return (
         <>
+            <Row >
+                <Col md={1}>
+                </Col>
+                <Col md={11} >
+                    <Button variant="primary" onClick={handleShowPositionModal}>Добавить должность</Button>
+                </Col>
+            </Row>
+            <Row className="mt-3 ">
+                <Col md={1}>
+                </Col>
+                <Col md={11}>
             <Table striped bordered hover>
                 <thead>
                     <tr>
@@ -32,11 +50,14 @@ const PositionTable = () => {
                             <td>{item.id}</td>
                             <td>{item.name}</td>
                             <td>{item.short_name}</td>
-                            <td><Button variant="danger">Удалить</Button></td>
+                            <td><Button variant="danger" onClick={async () => {await deletePosition(item.id);fetchData();}}>Удалить</Button></td>
                         </tr>
                     ))}
                 </tbody>
             </Table>
+            <CreatePositionModal show={showPositionModal} onHide={() => {setShowPositionModal(false);fetchData()}} />
+            </Col>
+            </Row>
         </>
     );
 };

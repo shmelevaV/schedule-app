@@ -1,9 +1,9 @@
 import React, { useContext } from "react";
 import {Col, Container, Row,Button} from "react-bootstrap";
-import GeneralTable from "../components/GeneralTable";
+import GeneralTable from "../components/Tables/GeneralTable";
 import SideBar from "../components/SideBar";
-import TableByDays from "../components/TableByDays";
-import TableByAuds from "../components/TableByAuds";
+import TableByDays from "../components/Tables/TableByDays";
+import TableByAuds from "../components/Tables/TableByAuds";
 import { Context } from "../index"; 
 import { observer } from "mobx-react-lite";
 
@@ -36,10 +36,7 @@ const Schedule = observer(() => {
     return (
         <Container>
             <Row className="mt-3">
-                <Col md={3}>
-                    <SideBar/>
-                </Col>
-                <Col md={9}>
+                <Col md={{ span: 9, offset: 3 }}>
                     <h1 style={{textAlign: "center"}}>
                     {
                         view.scheduleView === "по аудиториям"?
@@ -52,21 +49,27 @@ const Schedule = observer(() => {
 
                     }
                     </h1>
-
+                </Col>
+            </Row>
+            <Row>
+                <Col md={3}>
+                    <SideBar/>
+                </Col>
+                <Col md={9}>
                     {scheduleTable}
                    
                     {
                         view.scheduleView === "общий"?
                         ""
                         :
-                                              <>
+                        <>
                         <h3 style={{textAlign: "center"}}>№ Недели</h3>
                         <div style={{display: 'flex', justifyContent: 'center'}}>
                             <Button variant="secondary" disabled={week.numberOfWeek <= 1} onClick={() => week.setNumberOfWeek(week.numberOfWeek - 1)} style={{marginRight: '10px'}}>Предыдущая</Button>
                             <h4>{week.numberOfWeek}</h4>
                             <Button variant="secondary" disabled={week.numberOfWeek >= 18} onClick={() => week.setNumberOfWeek(week.numberOfWeek + 1)} style={{marginLeft: '10px'}}>Следующая</Button>
                         </div>
-                    </>
+                        </>
                     }
                 
                 </Col>

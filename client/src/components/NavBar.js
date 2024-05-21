@@ -21,7 +21,8 @@ const NavBar = observer(() => {
     return(
         <Navbar bg="primary" data-bs-theme="dark">
          <Container>
-            <NavLink  style = {{color:'white'}} to = {SCHEDULE_ROUTE}>Главная</NavLink>
+         <NavLink style={{color: 'white', fontSize: '20px', textDecoration: 'none'}} to = {SCHEDULE_ROUTE}>Главная</NavLink>
+         
         {user.isAuth === 0 ?
           <Nav className="ml-auto">
             <Button variant={"outline-light"} onClick ={() => {navigate(LOGIN_ROUTE)}}>Авторизация</Button>
