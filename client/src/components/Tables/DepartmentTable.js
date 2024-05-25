@@ -9,6 +9,7 @@ const DepartmentTable = () => {
 
     const fetchData = async () => {
         const departmentData = await getDepartments();
+        departmentData.sort((a, b) => a.name.localeCompare(b.name));
         setDepartments(departmentData);
     };
 
@@ -24,19 +25,11 @@ const DepartmentTable = () => {
 
     return (
         <>
-            <Row >
-                <Col md={1}>
-                </Col>
-                <Col md={11} >
-                    <Button variant="primary" onClick={handleShowDepartmentModal}>Добавить кафедру</Button>
-                </Col>
-            </Row>
 
-            <Row className="mt-3 ">
-                <Col md={1}>
-                </Col>
-                <Col md={11}>
-            <Table striped bordered hover>
+            <Button variant="primary" onClick={handleShowDepartmentModal} className="mt-3">Добавить кафедру</Button>
+
+
+            <Table striped bordered hover className="mt-3">
                 <thead>
                     <tr>
                         <th>ID кафедры</th>
@@ -55,8 +48,6 @@ const DepartmentTable = () => {
                 </tbody>
             </Table>
             <CreateDepartmentModal show={showDepartmentModal} onHide={() => {setShowDepartmentModal(false);fetchData()}} />
-            </Col>
-            </Row>
         </>
     );
 };

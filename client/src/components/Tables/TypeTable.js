@@ -22,18 +22,8 @@ const TypeTable = () => {
 
     return (
         <>
-        <Row >
-            <Col md={1}>
-            </Col>
-            <Col md={11} >
-                <Button variant="primary" onClick={handleShowAudTypeModal}>Добавить тип</Button>
-            </Col>
-        </Row>
-        <Row className="mt-3 ">
-            <Col md={1}>
-            </Col>
-            <Col md={11} >
-            <Table striped bordered hover>
+            <Button variant="primary" onClick={handleShowAudTypeModal} className="mt-3">Добавить тип</Button>
+            <Table striped bordered hover className="mt-3">
                 <thead>
                     <tr>
                         <th>ID типа аудитории</th>
@@ -51,9 +41,7 @@ const TypeTable = () => {
                     ))}
                 </tbody>
             </Table>
-            </Col>
             <CreateAudType show={showAudTypeModal} onHide={() => {setShowAudTypeModal(false);fetchData()}} />
-            </Row>
         </>
     );
 };

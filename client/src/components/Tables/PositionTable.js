@@ -5,11 +5,12 @@ import CreatePositionModal from "../Modals/CreatePosition";
 
 const PositionTable = () => {
 
-    const [departments, setDepartments] = useState([]);
+    const [positions, setPositions] = useState([]);
 
     const fetchData = async () => {
-        const departmentData = await getPositions();
-        setDepartments(departmentData);
+        const positionData = await getPositions();
+        positionData.sort((a, b) => a.name.localeCompare(b.name));
+        setPositions(positionData);
     };
 
     const [showPositionModal, setShowPositionModal] = useState(false);
@@ -24,18 +25,10 @@ const PositionTable = () => {
 
     return (
         <>
-            <Row >
-                <Col md={1}>
-                </Col>
-                <Col md={11} >
-                    <Button variant="primary" onClick={handleShowPositionModal}>Добавить должность</Button>
-                </Col>
-            </Row>
-            <Row className="mt-3 ">
-                <Col md={1}>
-                </Col>
-                <Col md={11}>
-            <Table striped bordered hover>
+
+            <Button variant="primary" onClick={handleShowPositionModal} className="mt-3">Добавить должность</Button>
+
+            <Table striped bordered hover className="mt-3">
                 <thead>
                     <tr>
                         <th>ID должности</th>
@@ -45,7 +38,7 @@ const PositionTable = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {departments.map((item, index) => (
+                    {positions.map((item, index) => (
                         <tr key={index}>
                             <td>{item.id}</td>
                             <td>{item.name}</td>
@@ -56,8 +49,7 @@ const PositionTable = () => {
                 </tbody>
             </Table>
             <CreatePositionModal show={showPositionModal} onHide={() => {setShowPositionModal(false);fetchData()}} />
-            </Col>
-            </Row>
+
         </>
     );
 };

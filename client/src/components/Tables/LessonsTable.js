@@ -5,11 +5,13 @@ import CreateLessonModal from "../Modals/CreateLesson";
 
 const LessonsTable = () => {
 
-    const [scheduleReq, setScheduleReq] = useState([]);
+    const [schedule, setSchedule] = useState([]);
 
     const fetchData = async () => {
-        const scheduleDataReq = await getLessons2();
-        setScheduleReq(scheduleDataReq);
+        const scheduleData = await getLessons2();
+        scheduleData.sort((a, b) => a.id - b.id);
+
+        setSchedule(scheduleData);
     };
     const [showAudTypeModal, setShowAudTypeModal] = useState(false);
 
@@ -22,18 +24,9 @@ const LessonsTable = () => {
 
     return (
         <>
-        <Row >
-            <Col md={1}>
-            </Col>
-            <Col md={11} >
-                <Button variant="primary" onClick={handleShowAudTypeModal}>Добавить занятие</Button>
-            </Col>
-        </Row>
-        <Row className="mt-3 ">
-            <Col md={1}>
-            </Col>
-            <Col md={11} >
-            <Table striped bordered hover>
+            <Button variant="primary" onClick={handleShowAudTypeModal} className="mt-3">Добавить занятие</Button>
+
+            <Table striped bordered hover className="mt-3">
                 <thead>
                     <tr>
                         <th>ID занятия</th>
@@ -49,7 +42,7 @@ const LessonsTable = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {scheduleReq.map((item, index) => (
+                    {schedule.map((item, index) => (
                         <tr key={index}>
                             <td>{item.id}</td>
                             <td>{item.auditorium_list && item.auditorium_list.number ? item.auditorium_list.number : 'NULL'}</td>
@@ -65,9 +58,8 @@ const LessonsTable = () => {
                     ))}
                 </tbody>
             </Table>
-            </Col>
             <CreateLessonModal show={showAudTypeModal} onHide={() => {setShowAudTypeModal(false);fetchData()}} />
-            </Row>
+
         </>
     );
 };

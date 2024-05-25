@@ -73,6 +73,7 @@ const SideBar = observer(() => {
                 </label>
             </div>
 
+
             {
                 view.scheduleView === "по дням"?
                 <div>
@@ -141,7 +142,21 @@ const SideBar = observer(() => {
                 <label style={{ display: 'block', textAlign: 'center' }}>{currentDate.toLocaleDateString()}</label>
                 </div>
                 :
-                <div> </div>
+                <div>             <h6 style={{textAlign: "center"}}>№ Аудитории</h6>
+                <div className="d-flex justify-content-center">
+                    <Dropdown as={ButtonGroup} >
+                        <Button variant="" style={{outline: '1px solid #000'}}>{aud.numberOfAud}</Button>
+                        <Dropdown.Toggle split variant="secondary" id="dropdown-custom-2" style={{outline: '1px solid #000'}}/>
+                        <Dropdown.Menu className="super-colors" >
+                            {auditoriums.map((NumberOfAud, index) => (
+                                <Dropdown.Item key={index} onClick={() => aud.setNumberOfAud(NumberOfAud)}>
+                                    {NumberOfAud}
+                                </Dropdown.Item>
+                            ))}
+                        </Dropdown.Menu>
+                    </Dropdown>
+                </div>
+                </div>
             }
         </div>
     );

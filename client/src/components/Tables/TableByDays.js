@@ -13,7 +13,6 @@ const TableByDays = () => {
     const [show, setShow] = useState(false);
     const [selectedCell, setSelectedCell] = useState(null);
     const {startDate} = useContext(Context);
-    const { day } = useContext(Context);
 
     const handleClose = () => setShow(false);
     const handleShow = (day, lesson) => {
@@ -35,7 +34,7 @@ const TableByDays = () => {
 
         fetchData();
 
-    }, [week.numberOfWeek,aud.numberOfAud]);
+    }, []);
 
     const getSelectedSchedule = () => {
         if (selectedCell) {

@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from "react";
-import {Table, Button, Row, Col} from "react-bootstrap";
+import {Table, Button} from "react-bootstrap";
 import { deleteDiscipline, getDisciplines } from "../../http/disciplineAPI";
 import CreateDisciplineModal from "../Modals/CreateDiscipline";
 
 const DisciplineTable = () => {
 
-    const [departments, setDepartments] = useState([]);
+    const [disciplines, setDisciplines] = useState([]);
 
     const fetchData = async () => {
-        const departmentData = await getDisciplines();
-        setDepartments(departmentData);
+        const disciplineData = await getDisciplines();
+        disciplineData.sort((a, b) => a.name.localeCompare(b.name));
+        setDisciplines(disciplineData);
     };
 
     const [showDisciplineModal, setShowDisciplineModal] = useState(false);
@@ -25,18 +26,10 @@ const DisciplineTable = () => {
 
     return (
         <>
-            <Row >
-                <Col md={1}>
-                </Col>
-                <Col md={11} >
-                    <Button variant="primary" onClick={handleShowDisciplineModal}>Добавить дисциплину</Button>
-                </Col>
-            </Row>
-            <Row className="mt-3 ">
-                <Col md={1}>
-                </Col>
-                <Col md={11}>
-            <Table striped bordered hover>
+
+            <Button variant="primary" onClick={handleShowDisciplineModal} className="mt-3">Добавить дисциплину</Button>
+
+            <Table striped bordered hover className="mt-3">
                 <thead>
                     <tr>
                         <th>ID дисциплины</th>
@@ -46,7 +39,7 @@ const DisciplineTable = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {departments.map((item, index) => (
+                    {disciplines.map((item, index) => (
                         <tr key={index}>
                             <td>{item.id}</td>
                             <td>{item.name}</td>
@@ -57,8 +50,6 @@ const DisciplineTable = () => {
                 </tbody>
             </Table>
             <CreateDisciplineModal show={showDisciplineModal} onHide={() => {setShowDisciplineModal(false);fetchData()}} />
-            </Col>
-            </Row>
         </>
     );
 };

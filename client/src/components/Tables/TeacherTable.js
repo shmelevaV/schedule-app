@@ -5,11 +5,12 @@ import CreateTeacherModal from "../Modals/CreateTeacher";
 
 const TeacherTable = () => {
 
-    const [types, setTypes] = useState([]);
+    const [teachers, setTeachers] = useState([]);
 
     const fetchData = async () => {
-        const typeData = await getTeachers();
-        setTypes(typeData);
+        const teacherData = await getTeachers();
+        teacherData.sort((a, b) => a.surname_N_P.localeCompare(b.surname_N_P));    
+        setTeachers(teacherData);
     };
 
     const [showTeacherModal, setShowTeacherModal] = useState(false);
@@ -24,18 +25,9 @@ const TeacherTable = () => {
 
     return (
         <>
-        <Row >
-                <Col md={1}>
-                </Col>
-                <Col md={11} >
-                    <Button variant="primary" onClick={handleShowTeacherModal}>Добавить преподавателя</Button>
-                </Col>
-            </Row>
-            <Row className="mt-3 ">
-                <Col md={1}>
-                </Col>
-                <Col md={11}>
-            <Table striped bordered hover>
+            <Button variant="primary" onClick={handleShowTeacherModal} className="mt-3">Добавить преподавателя</Button>
+
+            <Table striped bordered hover className="mt-3">
                 <thead>
                     <tr>
                         <th>ID преподавателя</th>
@@ -46,7 +38,7 @@ const TeacherTable = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {types.map((item, index) => (
+                    {teachers.map((item, index) => (
                         <tr key={index}>
                             <td>{item.id}</td>
                             <td>{item.surname_N_P}</td>
@@ -58,8 +50,6 @@ const TeacherTable = () => {
                 </tbody>
             </Table>
             <CreateTeacherModal show={showTeacherModal} onHide={() => {setShowTeacherModal(false);fetchData()}} />
-            </Col>
-            </Row>
         </>
     );
 };

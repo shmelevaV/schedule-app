@@ -9,6 +9,7 @@ const GroupTable = () => {
 
     const fetchData = async () => {
         const groupData = await getGroups();
+        groupData.sort((a, b) => a.name.localeCompare(b.name));
         setGroups(groupData);
     };
 
@@ -24,18 +25,9 @@ const GroupTable = () => {
 
     return (
         <>
-            <Row >
-                <Col md={1}>
-                </Col>
-                <Col md={11} >
-                    <Button variant="primary" onClick={handleShowGroupModal}>Добавить группу</Button>
-                </Col>
-            </Row>
-            <Row className="mt-3 ">
-                <Col md={1}>
-                </Col>
-                <Col md={11}>
-            <Table striped bordered hover>
+            <Button variant="primary" onClick={handleShowGroupModal} className="mt-3">Добавить группу</Button>
+
+            <Table striped bordered hover className="mt-3">
                 <thead>
                     <tr>
                         <th>ID группы</th>
@@ -54,8 +46,6 @@ const GroupTable = () => {
                 </tbody>
             </Table>
             <CreateGroupModal show={showGroupModal} onHide={() => {setShowGroupModal(false);fetchData()}} />
-            </Col>
-            </Row>
         </>
     );
 };

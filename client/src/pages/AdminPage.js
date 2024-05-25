@@ -85,10 +85,10 @@ const AdminPage = observer( () =>{
     <>
 
         <Row className="mt-3 "  style={{ paddingLeft: '15px' }}>
-            <Col md={1}>
+            <Col md={2}>
                 <TableBar/>
             </Col>
-            <Col md={1} >
+            <Col md={10}  style={{ overflowX: 'auto' }} >
                 {currentTable} 
             </Col>
         </Row>

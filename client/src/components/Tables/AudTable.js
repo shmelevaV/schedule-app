@@ -9,6 +9,7 @@ const AudTable = () => {
 
     const fetchData = async () => {
         const audData = await getJoinedAuds();
+        audData.sort((a, b) => a.number.localeCompare(b.number));
         setAuditoriums(audData);
     };
 
@@ -24,18 +25,10 @@ const AudTable = () => {
 
     return (
         <>
-            <Row >
-                <Col md={1}>
-                </Col>
-                <Col md={11} >
-                    <Button variant="primary" onClick={handleShowAudModal}>Добавить аудиторию</Button>
-                </Col>
-            </Row>
-            <Row className="mt-3 ">
-                <Col md={1}>
-                </Col>
-                <Col md={11}>
-            <Table striped bordered hover>
+
+            <Button variant="primary" onClick={handleShowAudModal}  className="mt-3">Добавить аудиторию</Button>
+
+            <Table striped bordered hover className="mt-3">
                 <thead>
                     <tr>
                         <th>ID аудитории</th>
@@ -57,9 +50,9 @@ const AudTable = () => {
                     ))}
                 </tbody>
             </Table>
-            </Col>
+
             <CreateAudModal show={showAudModal} onHide={() => {setShowAudModal(false);fetchData()}} />
-            </Row>
+
         </>
     );
 };

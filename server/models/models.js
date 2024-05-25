@@ -98,8 +98,8 @@ ClassSchedule.belongsTo(GroupList)
 AuditoriumList.hasMany(ClassSchedule)
 ClassSchedule.belongsTo(AuditoriumList)
 
-TypeList.hasMany(AuditoriumList)
-AuditoriumList.belongsTo(TypeList)
+TypeList.hasMany(AuditoriumList, { onDelete: 'CASCADE' })
+AuditoriumList.belongsTo(TypeList, { onDelete: 'CASCADE' })
 
 
 module.exports = {
