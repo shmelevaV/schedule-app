@@ -36,7 +36,7 @@ const NavBar = observer(() => {
           :
           <Nav className="ml-auto">
           <Button variant={"outline-light"} style={{ marginLeft: '0.5rem' }} onClick ={() => navigate(REQUESTS_ROUTE)}>Мои заявки</Button>
-          <Button variant={"outline-light"} style={{ marginLeft: '0.5rem' }} onClick ={() => navigate(ADMIN_ROUTE)}>Админ панель</Button>
+          <Button variant={"outline-light"} style={{ marginLeft: '0.5rem' }} onClick ={() => navigate(ADMIN_ROUTE)}>Панель админа</Button>
           <Button variant={"outline-light"} style={{ marginLeft: '0.5rem' }} onClick ={() => logOut()} >Выйти</Button>
           </Nav>
         }
