@@ -1,22 +1,31 @@
 import React, { useContext, useState, useEffect } from "react";
 import {Modal, Button, Form} from "react-bootstrap";
 import { Context } from "../../index"; 
-import { createReqLesson } from "../../http/lessonAPI";
+import { createReqLesson, getLessons, getReqLessons } from "../../http/lessonAPI";
 import { getDisciplines } from "../../http/disciplineAPI";
 import { getTeachers } from "../../http/TeacherAPI";
 import { getGroups } from "../../http/groupAPI";
 import { getAuds } from "../../http/audAPI";
+import DatePicker, { registerLocale } from "react-datepicker";
+import ru from 'date-fns/locale/ru';
+import "react-datepicker/dist/react-datepicker.css";
+
+registerLocale('ru', ru);
 
 const EditCellModal = ({ show, handleClose, selectedCell, getSelectedSchedule,updateSchedule}) => {
     const {day} = useContext(Context);
     const {week} = useContext(Context);
     const {startDate} = useContext(Context);
     const {aud} = useContext(Context);
-    const{user}=useContext(Context)
+    const {user} = useContext(Context)
 
     const [disciplines, setDisciplines] = useState([]);
     const [teachers, setTeachers] = useState([]);
     const [groups, setGroups] = useState([]);
+    const [lastDate, setLastDate] = useState('');
+    const [period, setPeriod] = useState('');
+    const [schedule, setSchedule] = useState([]); 
+    const [scheduleReq, setScheduleReq] = useState([]); 
 
     const [selectedDiscipline, setSelectedDiscipline] = useState(null);
     const [selectedTeacher, setSelectedTeacher] = useState(null);
@@ -32,18 +41,119 @@ const EditCellModal = ({ show, handleClose, selectedCell, getSelectedSchedule,up
         getDisciplines().then(data => setDisciplines(data));
         getTeachers().then(data => setTeachers(data));
         getGroups().then(data => setGroups(data));
+        getLessons().then(data => setSchedule(data))
+        getReqLessons().then(data => setScheduleReq(data));
     }, []);
+
+    const isDateValid = (date) => {
+        // Проверка даты на валидность
+        return date instanceof Date && !isNaN(date);
+    };
+
+    const checkCollisions = (aud,nOfPair,reqFd,reqPer,reqLd)=>{
+        console.log(aud,nOfPair,reqFd,reqPer,reqLd)
+        //проверяем все записи из расписания
+        for(let i=0;i<schedule.length;i++){
+            
+            let LessonFDate = new Date(schedule[i].firstDate);
+            let ReqFDate = new Date(reqFd);
+
+            let LessonLDate = new Date(schedule[i].lastDate);
+            let ReqLDate = new Date(reqLd);
+       
+            //если совпадает аудитория, номер пары и день недели
+            if(schedule[i].auditorium_list.number === aud && schedule[i].number === nOfPair && LessonFDate.getDay() === ReqFDate.getDay()){
+                // Создаем новую дату для проверки пересечений
+                let reqCheckDate = new Date(ReqFDate);
+                let lessonCheckDate = new Date(LessonFDate)
+                // Пока дата проверки не превысит последнюю дату занятия
+                while(reqCheckDate <= ReqLDate){
+                    while(lessonCheckDate  <= LessonLDate){
+                    // Если дата проверки совпадает с датой запроса
+                    if(reqCheckDate.getTime() === lessonCheckDate.getTime()){
+                        return true; // Найдено пересечение
+                    }
+                    // Переходим к следующей дате занятия, добавляя период
+                    lessonCheckDate.setDate(lessonCheckDate.getDate() + 7 * schedule[i].period);
+                    }
+                    lessonCheckDate = new Date(LessonFDate)
+                    // Переходим к следующей дате занятия, добавляя период
+                    reqCheckDate.setDate(reqCheckDate.getDate() + 7 * reqPer);
+                }
+            }
+            }
+                    for(let i=0;i<schedule.length;i++){
+            
+            let LessonFDate = new Date(schedule[i].firstDate);
+            let ReqFDate = new Date(reqFd);
+
+            let LessonLDate = new Date(schedule[i].lastDate);
+            let ReqLDate = new Date(reqLd);
+       
+            //если совпадает аудитория, номер пары и день недели
+            if(schedule[i].auditorium_list.number === aud && schedule[i].number === nOfPair && LessonFDate.getDay() === ReqFDate.getDay()){
+                // Создаем новую дату для проверки пересечений
+                let reqCheckDate = new Date(ReqFDate);
+                let lessonCheckDate = new Date(LessonFDate)
+                // Пока дата проверки не превысит последнюю дату занятия
+                while(reqCheckDate <= ReqLDate){
+                    while(lessonCheckDate  <= LessonLDate){
+                    // Если дата проверки совпадает с датой запроса
+                    if(reqCheckDate.getTime() === lessonCheckDate.getTime()){
+                        return true; // Найдено пересечение
+                    }
+                    // Переходим к следующей дате занятия, добавляя период
+                    lessonCheckDate.setDate(lessonCheckDate.getDate() + 7 * schedule[i].period);
+                    }
+                    lessonCheckDate = new Date(LessonFDate)
+                    // Переходим к следующей дате занятия, добавляя период
+                    reqCheckDate.setDate(reqCheckDate.getDate() + 7 * reqPer);
+                }
+            }
+        }
+        for(let i=0;i<scheduleReq.length;i++){
+            
+            let LessonFDate = new Date(scheduleReq[i].firstDate);
+            let ReqFDate = new Date(reqFd);
+
+            let LessonLDate = new Date(scheduleReq[i].lastDate);
+            let ReqLDate = new Date(reqLd);
+       
+            //если совпадает аудитория, номер пары и день недели
+            if(scheduleReq[i].auditorium_list.number === aud && scheduleReq[i].number === nOfPair && LessonFDate.getDay() === ReqFDate.getDay() && scheduleReq[i].status!="Отклонена"){
+                // Создаем новую дату для проверки пересечений
+                let reqCheckDate = new Date(ReqFDate);
+                let lessonCheckDate = new Date(LessonFDate)
+                // Пока дата проверки не превысит последнюю дату занятия
+                while(reqCheckDate <= ReqLDate){
+                    while(lessonCheckDate  <= LessonLDate){
+                    // Если дата проверки совпадает с датой запроса
+                    if(reqCheckDate.getTime() === lessonCheckDate.getTime()){
+                        return true; // Найдено пересечение
+                    }
+                    // Переходим к следующей дате занятия, добавляя период
+                    lessonCheckDate.setDate(lessonCheckDate.getDate() + 7 * scheduleReq[i].period);
+                    }
+                    lessonCheckDate = new Date(LessonFDate)
+                    // Переходим к следующей дате занятия, добавляя период
+                    reqCheckDate.setDate(reqCheckDate.getDate() + 7 * reqPer);
+                }
+            }
+        }
+            return false
+        }
 
     const daysOfWeek = ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'];
     let currentDate = new Date(startDate.startDate); 
     currentDate.setDate(startDate.startDate.getDate()+7*(week.numberOfWeek-1)-startDate.startDate.getDay()+daysOfWeek.indexOf(selectedCell?.day ?? day.dayOfWeek)+1); 
     const handleRequest = async () => {
-
+        if(checkCollisions(selectedCell?.aud || aud.numberOfAud,Number(selectedCell?.lesson[0]),currentDate.toISOString().split('T')[0], period, lastDate.toISOString().split('T')[0])){
+            alert("Ошибка, найдена коллизия");
+            handleClose();
+        }else{
         const number =  Number(selectedCell?.lesson[0]);
         const submissionDate = new Date().toISOString().split('T')[0];
         const firstDate = currentDate.toISOString().split('T')[0];
-        const period = 1;
-        const lastDate = currentDate.toISOString().split('T')[0];
         const status = "Рассматривается";
         const teacherListId = selectedTeacher;
         const disciplineListId = selectedDiscipline;
@@ -51,7 +161,7 @@ const EditCellModal = ({ show, handleClose, selectedCell, getSelectedSchedule,up
 
         const auditoriumListId = await getAudId(selectedCell?.aud || aud.numberOfAud);
 
-        const data = await createReqLesson(number,submissionDate,firstDate,period,lastDate,
+        const data = await createReqLesson(number,submissionDate,firstDate,Number(period),lastDate,
             status,teacherListId,disciplineListId,groupListId,auditoriumListId);
             
         setSelectedGroup(null);
@@ -59,6 +169,8 @@ const EditCellModal = ({ show, handleClose, selectedCell, getSelectedSchedule,up
         setSelectedDiscipline(null);
         updateSchedule();
         handleClose();
+        }
+
     }
     const allValuesSelected = selectedDiscipline && selectedTeacher && selectedGroup;
 
@@ -115,6 +227,25 @@ const EditCellModal = ({ show, handleClose, selectedCell, getSelectedSchedule,up
                                         <Form.Label style={{fontWeight: "bold"}} className="mt-1">Дата</Form.Label>
                                         <Form.Control type="text" value={currentDate.toLocaleDateString()} />
                                     </div>
+                                    <div style={{textAlign: "center"}}>
+                        <Form.Label style={{fontWeight: "bold" }} className="mt-1">Приодичность занятия</Form.Label>
+                        <Form.Select value={period} onChange={e => setPeriod(e.target.value)}>
+                            <option value="">Выберите период</option>
+                            {[1, 2, 4].map(num => (
+                                <option value={num}>{num}</option>
+                            ))}
+                        </Form.Select>
+                        </div>
+                        <div style={{textAlign: "center"}}>
+                        <Form.Label style={{fontWeight: "bold", display:"block"}} className="mt-1">Дата последнего занятия</Form.Label>
+                        <DatePicker 
+                            selected={lastDate} 
+                            onChange={date => setLastDate(date)} 
+                            dateFormat="yyyy-MM-dd"
+                            locale="ru"
+                            className={`form-control ${isDateValid(lastDate) ? 'is-valid' : 'is-invalid'}`}
+                        />
+                   </div>
                                     <div style={{textAlign: "center"}}>
                                     <Form.Label style={{fontWeight: "bold"}} className="mt-1">Дисциплина</Form.Label>
                                     <Form.Select value={selectedDiscipline} onChange={e => setSelectedDiscipline(e.target.value)}>

@@ -1,37 +1,40 @@
 import React, { useState, useEffect, useContext } from "react";
 import {Table, Modal, Button, Form} from "react-bootstrap";
-import './Table.css'; 
+import '../../styles/Table.css'; 
 import { Context } from "../../index"; 
 import { getAuds} from "../../http/audAPI";
-import { getLessons, getLessons2, getReqLessons} from "../../http/lessonAPI";
+import {getLessons, getReqLessons} from "../../http/lessonAPI";
 import EditCellModal from "../Modals/Modal";
 
 const TableByAuds = () => {
     const lessons = ['1 пара', '2 пара', '3 пара', '4 пара', '5 пара', '6 пара'];
     const daysOfWeek = ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'];    
-    const { day } = useContext(Context);
+
+    const {day} = useContext(Context);
     const {week} = useContext(Context);
     const {startDate} = useContext(Context);
 
     const [show, setShow] = useState(false);
     const [selectedCell, setSelectedCell] = useState(null);
+    const [auditoriums, setAuditoriums] = useState([]);
+    const [schedule, setSchedule] = useState([]); // Добавляем состояние для расписания
+    const [scheduleReq, setScheduleReq] = useState([]); 
+
     const handleClose = () => setShow(false);
     const handleShow = (aud, lesson) => {
         setSelectedCell({ aud, lesson });
         setShow(true);
     };
-    const [auditoriums, setAuditoriums] = useState([]);
-    const [schedule, setSchedule] = useState([]); // Добавляем состояние для расписания
-    const [scheduleReq, setScheduleReq] = useState([]); // Добавляем состояние для расписания из заявок
 
     const fetchData = async () => {
         const data = await getAuds();
+        data.sort((a, b) => a.number.localeCompare(b.number));
         setAuditoriums(data.map(aud => aud.number));
 
-         const scheduleData = await getLessons2();
-         const scheduleDataReq = await getReqLessons();
-         setSchedule(scheduleData); // Устанавливаем расписание
-         setScheduleReq(scheduleDataReq); // Устанавливаем расписание из заявок
+        const scheduleData = await getLessons();
+        const scheduleDataReq = await getReqLessons();
+        setSchedule(scheduleData); 
+        setScheduleReq(scheduleDataReq); 
     };
 
     useEffect(() => {
@@ -62,7 +65,7 @@ const TableByAuds = () => {
 
         for(let i=0;i<scheduleReq.length;i++){
             if(scheduleReq[i].number === selectedLessonNumber){
-                if(scheduleReq[i].auditorium_list.number===selectedCell.aud && scheduleReq[i].status !="Отклонена"){
+                if(scheduleReq[i].auditorium_list.number===selectedCell.aud && scheduleReq[i].status != "Отклонена"){
                     let currentDate = new Date(startDate.startDate); 
                     currentDate.setDate(startDate.startDate.getDate() + 7 * (week.numberOfWeek - 1) - startDate.startDate.getDay() + daysOfWeek.indexOf(day.dayOfWeek) + 1);
                     let tempDate = new Date(scheduleReq[i].firstDate);
@@ -82,30 +85,29 @@ const TableByAuds = () => {
         return null;
     }
 
-    const getlesn = (aud,nOfPair,schedule)=>{
+    const findLesson = (aud,nOfPair,schedule)=>{
 
         for(let i=0;i<schedule.length;i++){
-            if(schedule[i].number ===nOfPair){
-                if(schedule[i].auditorium_list.number===aud){
-                    let currentDate = new Date(startDate.startDate); 
-                    currentDate.setDate(startDate.startDate.getDate() + 7 * (week.numberOfWeek - 1) - startDate.startDate.getDay() + daysOfWeek.indexOf(day.dayOfWeek) + 1);
-                    let tempDate = new Date(schedule[i].firstDate);
-                    let tempLastDate = new Date(schedule[i].lastDate);
-                    tempDate.setDate(tempDate.getDate());
-                   
-                    for(let j = 0; tempDate <= tempLastDate; j++){
-                       if(currentDate.toLocaleDateString()===tempDate.toLocaleDateString()){
-                        return{ text: (schedule[i].discipline_list.short_name + " " + schedule[i].group_list.name), color: "white" };
-                       }
-                       tempDate.setDate(tempDate.getDate() + 7 * schedule[i].period);
-                    }
+            if(schedule[i].number === nOfPair && schedule[i].auditorium_list.number===aud){
+
+                let currentDate = new Date(startDate.startDate); 
+                currentDate.setDate(startDate.startDate.getDate() + 7 * (week.numberOfWeek - 1) - startDate.startDate.getDay() + daysOfWeek.indexOf(day.dayOfWeek) + 1);
+                let tempDate = new Date(schedule[i].firstDate);
+                let tempLastDate = new Date(schedule[i].lastDate);
+                tempDate.setDate(tempDate.getDate());
+               
+                for(let j = 0; tempDate <= tempLastDate; j++){
+                   if(currentDate.toLocaleDateString()===tempDate.toLocaleDateString()){
+                    return{ text: (schedule[i].discipline_list.short_name + " " + schedule[i].group_list.name), color: "white" };
+                   }
+                   tempDate.setDate(tempDate.getDate() + 7 * schedule[i].period);
                 }
             }
         }
 
         for(let i=0;i<scheduleReq.length;i++){
-            if(scheduleReq[i].number === nOfPair){
-                if(scheduleReq[i].auditorium_list.number===aud){
+            if(scheduleReq[i].number === nOfPair && scheduleReq[i].auditorium_list.number===aud){
+
                     let currentDate = new Date(startDate.startDate); 
                     currentDate.setDate(startDate.startDate.getDate() + 7 * (week.numberOfWeek - 1) - startDate.startDate.getDay() + daysOfWeek.indexOf(day.dayOfWeek) + 1);
                     let tempDate = new Date(scheduleReq[i].firstDate);
@@ -123,7 +125,6 @@ const TableByAuds = () => {
                        }
                        tempDate.setDate(tempDate.getDate() + 7 * scheduleReq[i].period);
                     }
-                }
             }
         }
         return { text: "", color: "white" };
@@ -146,9 +147,9 @@ const TableByAuds = () => {
                     <tr key={index}>
                         <td>{aud}</td>
                         {lessons.map((lesson, index2) => (
-                            <td key={index2} className="hoverable" onClick={() => handleShow(aud, lesson)} style={{backgroundColor: getlesn(aud,index2+1,schedule).color, cursor: 'pointer'}}>
+                            <td key={index2} className="hoverable" onClick={() => handleShow(aud, lesson)} style={{backgroundColor: findLesson(aud,index2+1,schedule).color, cursor: 'pointer'}}>
                                 {
-                               getlesn(aud,index2+1,schedule).text
+                                    findLesson(aud,index2+1,schedule).text
                                 }
                             </td>
                         ))}
@@ -163,7 +164,6 @@ const TableByAuds = () => {
             getSelectedSchedule={getSelectedSchedule}
             updateSchedule={fetchData}
         />
-
         </>
     );
 };

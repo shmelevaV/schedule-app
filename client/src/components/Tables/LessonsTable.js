@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {Table, Button, Row, Col} from "react-bootstrap";
-import { deleteLesson, getLessons2 } from "../../http/lessonAPI";
+import { deleteLesson, getLessons } from "../../http/lessonAPI";
 import CreateLessonModal from "../Modals/CreateLesson";
 
 const LessonsTable = () => {
@@ -8,7 +8,7 @@ const LessonsTable = () => {
     const [schedule, setSchedule] = useState([]);
 
     const fetchData = async () => {
-        const scheduleData = await getLessons2();
+        const scheduleData = await getLessons();
         scheduleData.sort((a, b) => a.id - b.id);
 
         setSchedule(scheduleData);

@@ -1,8 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
 import {Table, Modal, Button, Form} from "react-bootstrap";
-import './Table.css'; 
+import '../../styles/Table.css'; 
 import { Context } from "../../index"; 
-import { getLessons2, getReqLessons } from "../../http/lessonAPI";
+import { getLessons, getReqLessons } from "../../http/lessonAPI";
 import EditCellModal from "../Modals/Modal";
 
 const TableByDays = () => {
@@ -24,7 +24,7 @@ const TableByDays = () => {
     const [scheduleReq, setScheduleReq] = useState([]); // Добавляем состояние для расписания из заявок
 
     const fetchData = async () => {
-        const scheduleData = await getLessons2();
+        const scheduleData = await getLessons();
         const scheduleDataReq = await getReqLessons();
         setSchedule(scheduleData); // Устанавливаем расписание
         setScheduleReq(scheduleDataReq); // Устанавливаем расписание из заявок
@@ -79,7 +79,7 @@ const TableByDays = () => {
     }
         return null;
     } 
-    const getlesn = (dayOfWeek,nOfPair,schedule)=>{
+    const findLesson = (dayOfWeek,nOfPair,schedule)=>{
 
         for(let i=0;i<schedule.length;i++){
             if(schedule[i].number ===nOfPair){
@@ -142,9 +142,9 @@ const TableByDays = () => {
                         <tr key={index}>
                             <td>{day}</td>
                             {lessons.map((lesson, index2) => (
-                                <td key={index2}  onClick={() => handleShow(day, lesson)} style={{backgroundColor: getlesn(index,index2+1,schedule).color, cursor: 'pointer'}} className="hoverable" >
+                                <td key={index2}  onClick={() => handleShow(day, lesson)} style={{backgroundColor: findLesson(index,index2+1,schedule).color, cursor: 'pointer'}} className="hoverable" >
                                 {
-                                    getlesn(index,index2+1,schedule).text
+                                    findLesson(index,index2+1,schedule).text
                                 }
                                 </td>
                             ))}

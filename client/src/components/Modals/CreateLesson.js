@@ -97,41 +97,41 @@ const CreateLessonModal = ({show, onHide}) => {
                         />
                     </Form.Group>
                     <Form.Group className="mb-3">
-<Form.Label style={{fontWeight: "bold"}} className="mt-1">Аудитория</Form.Label>
-<Form.Select value={selectedAuditorium} onChange={e => setSelectedAuditorium(e.target.value)}>
-    <option value="">Выберите аудиторию</option>
-    {auditoriums.map(auditorium => (
-    <option value={auditorium.id}>{auditorium.number}</option>
-    ))}
-</Form.Select>
-</Form.Group>
-<Form.Group className="mb-3">
-<Form.Label style={{fontWeight: "bold"}} className="mt-1">Преподаватель</Form.Label>
-<Form.Select value={selectedTeacher} onChange={e => setSelectedTeacher(e.target.value)}>
-    <option value="">Выберите преподавателя</option>
-    {teachers.map(teacher => (
-    <option value={teacher.id}>{teacher.surname_N_P}</option>
-    ))}
-</Form.Select>
-</Form.Group>
-<Form.Group className="mb-3">
-<Form.Label style={{fontWeight: "bold"}} className="mt-1">Дисциплина</Form.Label>
-<Form.Select value={selectedDiscipline} onChange={e => setSelectedDiscipline(e.target.value)}>
-    <option value="">Выберите дисциплину</option>
-    {disciplines.map(department => (
-    <option value={department.id}>{department.name}</option>
-    ))}
-</Form.Select>
-</Form.Group>
-<Form.Group className="mb-3">
-<Form.Label style={{fontWeight: "bold"}} className="mt-1">Группа</Form.Label>
-<Form.Select value={selectedGroup} onChange={e => setSelectedGroup(e.target.value)}>
-    <option value="">Выберите группу</option>
-    {groups.map(position => (
-    <option value={position.id}>{position.name}</option>
-    ))}
-</Form.Select>
-</Form.Group>
+                    <Form.Label style={{fontWeight: "bold"}} className="mt-1">Аудитория</Form.Label>
+                    <Form.Select value={selectedAuditorium} onChange={e => setSelectedAuditorium(e.target.value)}>
+                        <option value="">Выберите аудиторию</option>
+                        {auditoriums.map(auditorium => (
+                        <option value={auditorium.id}>{auditorium.number}</option>
+                        ))}
+                    </Form.Select>
+                    </Form.Group>
+                    <Form.Group className="mb-3">
+                    <Form.Label style={{fontWeight: "bold"}} className="mt-1">Преподаватель</Form.Label>
+                    <Form.Select value={selectedTeacher} onChange={e => setSelectedTeacher(e.target.value)}>
+                        <option value="">Выберите преподавателя</option>
+                        {teachers.map(teacher => (
+                        <option value={teacher.id}>{teacher.surname_N_P}</option>
+                        ))}
+                    </Form.Select>
+                    </Form.Group>
+                    <Form.Group className="mb-3">
+                    <Form.Label style={{fontWeight: "bold"}} className="mt-1">Дисциплина</Form.Label>
+                    <Form.Select value={selectedDiscipline} onChange={e => setSelectedDiscipline(e.target.value)}>
+                        <option value="">Выберите дисциплину</option>
+                        {disciplines.map(department => (
+                        <option value={department.id}>{department.name}</option>
+                        ))}
+                    </Form.Select>
+                    </Form.Group>
+                    <Form.Group className="mb-3">
+                    <Form.Label style={{fontWeight: "bold"}} className="mt-1">Группа</Form.Label>
+                    <Form.Select value={selectedGroup} onChange={e => setSelectedGroup(e.target.value)}>
+                        <option value="">Выберите группу</option>
+                        {groups.map(position => (
+                        <option value={position.id}>{position.name}</option>
+                        ))}
+                    </Form.Select>
+                    </Form.Group>
                 </Form>
             </Modal.Body>
             <Modal.Footer>

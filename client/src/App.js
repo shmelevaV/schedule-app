@@ -39,7 +39,6 @@ const App = observer( ()=>{
     )
   }
 
-
   return (
     <BrowserRouter>
     <NavBar />

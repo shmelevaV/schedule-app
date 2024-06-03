@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useContext } from "react";
 import {Table} from "react-bootstrap";
-import './Table.css'; 
+import '../../styles/Table.css'; 
 import { Context } from "../../index"; 
-import { getLessons2 } from "../../http/lessonAPI";
+import { getLessons } from "../../http/lessonAPI";
 import { observer } from "mobx-react-lite";
 
 
@@ -16,7 +16,7 @@ const GeneralTable = observer( () =>{
     const {aud} = useContext(Context);
 
     const fetchData = async () => {
-         const scheduleData = await getLessons2();
+         const scheduleData = await getLessons();
          setSchedule(scheduleData); // Устанавливаем расписание
     };
 

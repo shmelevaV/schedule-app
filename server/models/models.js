@@ -65,38 +65,38 @@ const TypeList = sequelize.define('type_list',{
 })
 
 
-TeacherList.hasMany(ClassSchedule)
-ClassSchedule.belongsTo(TeacherList)
+TeacherList.hasMany(ClassSchedule, { onDelete: 'CASCADE' })
+ClassSchedule.belongsTo(TeacherList, { onDelete: 'CASCADE' })
 
-TeacherList.hasMany(UserAcc)
-UserAcc.belongsTo(TeacherList)
+TeacherList.hasMany(UserAcc, { onDelete: 'CASCADE' })
+UserAcc.belongsTo(TeacherList, { onDelete: 'CASCADE' })
 
-TeacherList.hasMany(RequestList)
-RequestList.belongsTo(TeacherList)
+TeacherList.hasMany(RequestList, { onDelete: 'CASCADE' })
+RequestList.belongsTo(TeacherList, { onDelete: 'CASCADE' })
 
-PositionList.hasMany(TeacherList)
-TeacherList.belongsTo(PositionList)
+PositionList.hasMany(TeacherList, { onDelete: 'CASCADE' })
+TeacherList.belongsTo(PositionList, { onDelete: 'CASCADE' })
 
-DepartmentList.hasMany(TeacherList)
-TeacherList.belongsTo(DepartmentList)
+DepartmentList.hasMany(TeacherList, { onDelete: 'CASCADE' })
+TeacherList.belongsTo(DepartmentList, { onDelete: 'CASCADE' })
 
-DisciplineList.hasMany(RequestList)
-RequestList.belongsTo(DisciplineList)
+DisciplineList.hasMany(RequestList, { onDelete: 'CASCADE' })
+RequestList.belongsTo(DisciplineList, { onDelete: 'CASCADE' })
 
-GroupList.hasMany(RequestList)
-RequestList.belongsTo(GroupList)
+GroupList.hasMany(RequestList, { onDelete: 'CASCADE' })
+RequestList.belongsTo(GroupList, { onDelete: 'CASCADE' })
 
-AuditoriumList.hasMany(RequestList)
-RequestList.belongsTo(AuditoriumList)
+AuditoriumList.hasMany(RequestList, { onDelete: 'CASCADE' })
+RequestList.belongsTo(AuditoriumList, { onDelete: 'CASCADE' })
 
-DisciplineList.hasMany(ClassSchedule)
-ClassSchedule.belongsTo(DisciplineList)
+DisciplineList.hasMany(ClassSchedule, { onDelete: 'CASCADE' })
+ClassSchedule.belongsTo(DisciplineList, { onDelete: 'CASCADE' })
 
-GroupList.hasMany(ClassSchedule)
-ClassSchedule.belongsTo(GroupList)
+GroupList.hasMany(ClassSchedule, { onDelete: 'CASCADE' })
+ClassSchedule.belongsTo(GroupList, { onDelete: 'CASCADE' })
 
-AuditoriumList.hasMany(ClassSchedule)
-ClassSchedule.belongsTo(AuditoriumList)
+AuditoriumList.hasMany(ClassSchedule, { onDelete: 'CASCADE' })
+ClassSchedule.belongsTo(AuditoriumList, { onDelete: 'CASCADE' })
 
 TypeList.hasMany(AuditoriumList, { onDelete: 'CASCADE' })
 AuditoriumList.belongsTo(TypeList, { onDelete: 'CASCADE' })
