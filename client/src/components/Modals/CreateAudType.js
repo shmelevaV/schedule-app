@@ -2,20 +2,21 @@ import React, { useState } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 import { CreateType } from '../../http/typeAPI';
 
+// Компонент модального окна для создания типа аудитории
 const CreateAudType = ({show, onHide}) => {
+    // Состояние для хранения названия типа аудитории
     const [TypeName, setTypeName] = useState('');
-
+    // Обработчик изменения ввода названия типа аудитории
     const handleInputChange = (event) => {
         setTypeName(event.target.value);
     };
-
+    // Обработчик нажатия кнопки "Добавить"
     const handleAddClick = async () => {
         if (TypeName) {
             await CreateType(TypeName);
             onHide();
         }
     };
-
     return (
         <Modal show={show} onHide={onHide}>
             <Modal.Header closeButton>
@@ -40,5 +41,4 @@ const CreateAudType = ({show, onHide}) => {
         </Modal>
     );
 }
-
 export default CreateAudType;

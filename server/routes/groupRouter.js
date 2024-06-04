@@ -1,10 +1,9 @@
 const Router = require('express')
 const router = new Router()
 const groupController = require('../controllers/groupController')
-const checkRole = require('../middleware/checkRoleMiddleware')
-
-router.post('/', groupController.create)
-router.get('/', groupController.getAll)
-router.delete('/:id',  groupController.delete);
+// Определяем маршруты для различных HTTP-запросов
+router.post('/', groupController.create) //Добавление новой группы
+router.get('/', groupController.getAll) // Получение всех групп
+router.delete('/:id',  groupController.delete); // Удаление группы по ID
 
 module.exports = router

@@ -1,31 +1,36 @@
 import React, { useState, useEffect, useContext } from "react";
-import {Table, Modal, Button, Form} from "react-bootstrap";
+import {Table} from "react-bootstrap";
 import '../../styles/Table.css'; 
-import { Context } from "../../index"; 
+import { Context } from "../.."; 
 import { getAuds} from "../../http/audAPI";
 import {getLessons, getReqLessons} from "../../http/lessonAPI";
 import EditCellModal from "../Modals/Modal";
 
+// Компонент таблицы по аудиториям
 const TableByAuds = () => {
+    // Списки для номеров занятий и дней недели
     const lessons = ['1 пара', '2 пара', '3 пара', '4 пара', '5 пара', '6 пара'];
     const daysOfWeek = ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'];    
-
+    // Получаем необходимые данные из контекста
     const {day} = useContext(Context);
     const {week} = useContext(Context);
     const {startDate} = useContext(Context);
 
+    // Создаем необходимые состояния
     const [show, setShow] = useState(false);
     const [selectedCell, setSelectedCell] = useState(null);
     const [auditoriums, setAuditoriums] = useState([]);
-    const [schedule, setSchedule] = useState([]); // Добавляем состояние для расписания
+    const [schedule, setSchedule] = useState([]);
     const [scheduleReq, setScheduleReq] = useState([]); 
 
+    // Обработчик закрытия модального окна
     const handleClose = () => setShow(false);
+    // Обработчик открытия модального окна
     const handleShow = (aud, lesson) => {
         setSelectedCell({ aud, lesson });
         setShow(true);
     };
-
+    // Функция получения данных из бд
     const fetchData = async () => {
         const data = await getAuds();
         data.sort((a, b) => a.number.localeCompare(b.number));
@@ -36,11 +41,12 @@ const TableByAuds = () => {
         setSchedule(scheduleData); 
         setScheduleReq(scheduleDataReq); 
     };
-
+    // Используем useEffect для вызова fetchData при монтировании компонента
     useEffect(() => {
         fetchData();
     }, [week.numberOfWeek, day.dayOfWeek]);
 
+    // Функция для получения выбранного расписания
     const getSelectedSchedule = () => {
         if (selectedCell) {
             const selectedLessonNumber = lessons.indexOf(selectedCell.lesson) + 1;
@@ -65,7 +71,7 @@ const TableByAuds = () => {
 
         for(let i=0;i<scheduleReq.length;i++){
             if(scheduleReq[i].number === selectedLessonNumber){
-                if(scheduleReq[i].auditorium_list.number===selectedCell.aud && scheduleReq[i].status != "Отклонена"){
+                if(scheduleReq[i].auditorium_list.number===selectedCell.aud && scheduleReq[i].status !== "Отклонена"){
                     let currentDate = new Date(startDate.startDate); 
                     currentDate.setDate(startDate.startDate.getDate() + 7 * (week.numberOfWeek - 1) - startDate.startDate.getDay() + daysOfWeek.indexOf(day.dayOfWeek) + 1);
                     let tempDate = new Date(scheduleReq[i].firstDate);
@@ -85,6 +91,7 @@ const TableByAuds = () => {
         return null;
     }
 
+    // Функция поиска занятия по номеру пары и аудитории
     const findLesson = (aud,nOfPair,schedule)=>{
 
         for(let i=0;i<schedule.length;i++){
@@ -130,7 +137,7 @@ const TableByAuds = () => {
         return { text: "", color: "white" };
     }
     
-    
+    // Возвращаем разметку компонента
     return (
         <>
         <Table striped bordered>

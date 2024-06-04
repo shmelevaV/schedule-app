@@ -1,23 +1,24 @@
 import React, { useContext, useEffect, useState } from "react";
 import { observer } from "mobx-react-lite";
-import { Context } from "../index"; 
+import { Context } from ".."; 
 import Dropdown from 'react-bootstrap/Dropdown';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import Button from 'react-bootstrap/Button';
 import { getAuds } from "../http/audAPI";
 
+// Компонент боковой панели
 const SideBar = observer(() => {
-    const { view } = useContext(Context);
-    const { day } = useContext(Context);
-    const {week} = useContext(Context);
-    const {aud} = useContext(Context);
+    //получаем необходимые данные из контекста
+    const {view} = useContext(Context); 
+    const {day} = useContext(Context); 
+    const {week} = useContext(Context); 
+    const {aud} = useContext(Context); 
     const {startDate} = useContext(Context);
-
-
 
     const daysOfWeek = ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'];
     const weeks = Array.from({length: 18}, (_, i) => i + 1); 
 
+    // Получение списка аудиторий
     const [auditoriums, setAuditoriums] = useState([]);
     useEffect(() => {
         const fetchData = async () => {
@@ -27,9 +28,11 @@ const SideBar = observer(() => {
         fetchData();
     }, []);
 
+    // Вычисление текущей даты
     let currentDate = new Date(startDate.startDate); 
     currentDate.setDate(startDate.startDate.getDate()+7*(week.numberOfWeek-1)-startDate.startDate.getDay()+daysOfWeek.indexOf(day.dayOfWeek)+1); 
 
+    // Обработчик изменения представления
     const handleChange = (event) => {
         view.setScheduleView(event.target.value);
     };
@@ -73,7 +76,7 @@ const SideBar = observer(() => {
                 </label>
             </div>
 
-
+            {/* В зависимости от выбранного представления отображаются разные элементы управления */}
             {
                 view.scheduleView === "по дням"?
                 <div>

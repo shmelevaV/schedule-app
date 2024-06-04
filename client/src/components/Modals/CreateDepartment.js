@@ -2,20 +2,21 @@ import React, { useState } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 import { CreateDepartment } from '../../http/departmentAPI';
 
+// Компонент модального окна для создания кафедры
 const CreateDepartmentModal = ({show, onHide}) => {
+    // Состояние для хранения названия кафедры
     const [departmentName, setDepartmentName] = useState('');
-
+    // Обработчик изменения ввода названия кафедры
     const handleInputChange = (event) => {
         setDepartmentName(event.target.value);
     };
-
+    // Обработчик нажатия кнопки "Добавить"
     const handleAddClick = async () => {
         if (departmentName) {
             await CreateDepartment(departmentName);
             onHide();
         }
     };
-
     return (
         <Modal show={show} onHide={onHide}>
             <Modal.Header closeButton>
@@ -40,5 +41,4 @@ const CreateDepartmentModal = ({show, onHide}) => {
         </Modal>
     );
 }
-
 export default CreateDepartmentModal;

@@ -1,10 +1,8 @@
 const Router = require('express')
 const router = new Router()
 const scheduleController = require('../controllers/scheduleController')
-const checkRole = require('../middleware/checkRoleMiddleware')
-
-router.post('/', scheduleController.create)
-router.get('/', scheduleController.getAll)
-router.delete('/:id', scheduleController.delete);
-
+// Определяем маршруты для различных HTTP-запросов
+router.post('/', scheduleController.create) // Добавление нового занятия
+router.get('/', scheduleController.getAll) // Получение всех занятий
+router.delete('/:id', scheduleController.delete); // Удаление занятия по ID
 module.exports = router

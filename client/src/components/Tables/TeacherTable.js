@@ -1,24 +1,29 @@
 import React, { useEffect, useState } from "react";
-import {Table, Button, Row, Col} from "react-bootstrap";
+import {Table, Button} from "react-bootstrap";
 import { deleteTeacher, getTeachers } from "../../http/TeacherAPI";
 import CreateTeacherModal from "../Modals/CreateTeacher";
 
+// Компонент таблицы преподавателей
 const TeacherTable = () => {
-
+    // Состояние для хранения списка преподавателей
     const [teachers, setTeachers] = useState([]);
 
+    // Функция для получения данных о преподавателях из БД
     const fetchData = async () => {
         const teacherData = await getTeachers();
         teacherData.sort((a, b) => a.surname_N_P.localeCompare(b.surname_N_P));    
         setTeachers(teacherData);
     };
 
+    // Состояние для управления модальным окном создания преподавателя
     const [showTeacherModal, setShowTeacherModal] = useState(false);
 
+    // Обработчик открытия модального окна создания преподавателя
     const handleShowTeacherModal = () => {
         setShowTeacherModal(true);
     };
 
+    // Используем useEffect для вызова fetchData при монтировании компонента
     useEffect(() => {
         fetchData();
     }, []);
@@ -38,6 +43,7 @@ const TeacherTable = () => {
                     </tr>
                 </thead>
                 <tbody>
+                    {/* Отображаем список преподавателей */}
                     {teachers.map((item, index) => (
                         <tr key={index}>
                             <td>{item.id}</td>
@@ -49,6 +55,7 @@ const TeacherTable = () => {
                     ))}
                 </tbody>
             </Table>
+            {/* Модальное окно для создания нового преподавателя */}
             <CreateTeacherModal show={showTeacherModal} onHide={() => {setShowTeacherModal(false);fetchData()}} />
         </>
     );

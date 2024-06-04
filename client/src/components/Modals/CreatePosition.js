@@ -2,25 +2,27 @@ import React, { useState } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 import { CreatePosition } from '../../http/positionAPI';
 
+// Компонент модального окна для создания должности
 const CreatePositionModal = ({show, onHide}) => {
+    // Состояние для хранения названия и краткого названия должности
     const [PositionName, setPositionName] = useState('');
     const [PositionShortName, setPositionShortName] = useState('');
 
+    // Обработчики изменения ввода названия и краткого названия должности
     const handleNameInputChange = (event) => {
         setPositionName(event.target.value);
     };
-
     const handleShortNameInputChange = (event) => {
         setPositionShortName(event.target.value);
     };
 
+    // Обработчик нажатия кнопки "Добавить"
     const handleAddClick = async () => {
         if (PositionName && PositionShortName) {
             await CreatePosition(PositionName, PositionShortName);
             onHide();
         }
     };
-
     return (
         <Modal show={show} onHide={onHide}>
             <Modal.Header closeButton>
@@ -49,5 +51,4 @@ const CreatePositionModal = ({show, onHide}) => {
         </Modal>
     );
 }
-
 export default CreatePositionModal;

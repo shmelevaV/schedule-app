@@ -1,9 +1,10 @@
 const Router = require('express')
 const router = new Router()
+// Импортируем контроллер для дисциплин
 const disciplineController = require('../controllers/disciplineController')
-
-router.post('/', disciplineController.create)
-router.get('/', disciplineController.getAll)
-router.delete('/:id',  disciplineController.delete);
+// Определяем маршруты для различных HTTP-запросов
+router.post('/', disciplineController.create) // Добавление новой дисциплины
+router.get('/', disciplineController.getAll) // Получение всех дисциплин
+router.delete('/:id',  disciplineController.delete); // Удаление дисциплины по ID
 
 module.exports = router

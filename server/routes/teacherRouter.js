@@ -1,11 +1,10 @@
 const Router = require('express')
 const router = new Router()
 const teacherController = require('../controllers/teacherController')
-const checkRole = require('../middleware/checkRoleMiddleware')
-
-router.post('/', teacherController.create)
-router.get('/', teacherController.getAll)
-router.get('/joined', teacherController.getAllJoined)
-router.delete('/:id',  teacherController.delete);
+// Определяем маршруты для различных HTTP-запросов
+router.post('/', teacherController.create) // Добавление нового преподавателя
+router.get('/', teacherController.getAll) // Получение всех преподавателей
+router.get('/joined', teacherController.getAllJoined) // Получение всех преподавателей с дополнительной информацией
+router.delete('/:id',  teacherController.delete); // Удаление преподавателя по ID
 
 module.exports = router

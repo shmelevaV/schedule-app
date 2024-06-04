@@ -1,47 +1,44 @@
 const {AuditoriumList, TypeList} = require('../models/models')
-const ApiError = require('../error/ApiError')
-
+// Определяем класс AuditoriumController
 class AuditoriumController{
+    // Метод для создания новой аудитории
     async create(req,res){
         const {number,capacity,typeListId} = req.body
         const type = await AuditoriumList.create({number,capacity,typeListId})
         return res.json(type)
     }
+    // Метод для получения всех аудиторий
     async getAll(req,res){
         const auds = await AuditoriumList.findAll()
         return res.json(auds)
     }
+    // Метод для получения всех аудиторий с присоединенными типами
     async getAllJoined(req,res){
         const auds = await AuditoriumList.findAll({
-
             include: [{
                 model: TypeList,
                 attributes: ['name'], 
-            },
-            ]
+            }]
         });
         return res.json(auds)
     }
+    // Метод для получения одной аудитории по id
     async getOne(req,res){
         const{id}=req.params
     }
     
+    // Метод для удаления аудитории по id
     async delete(req, res) {
         const {id} = req.params;
         if (!id) {
-            return res.status(400).json({message: "ID заявки является обязательным параметром"});
+            return res.status(400).json({message: "ID является обязательным параметром"});
         }
-
         const request = await AuditoriumList.findOne({ where: { id } });
-
         if (!request) {
-            return res.status(404).json({message: "Заявка не найдена"});
+            return res.status(404).json({message: "Аудитория не найдена"});
         }
-
         await request.destroy();
-
-        return res.json({message: "Заявка успешно удалена"});
+        return res.json({message: "Удаление прошло успешно"});
     }
 }
-
 module.exports = new AuditoriumController()

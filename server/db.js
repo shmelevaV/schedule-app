@@ -1,12 +1,13 @@
+// Импортируем Sequelize
 const {Sequelize} = require('sequelize')
-
+// Экспортируем новый экземпляр Sequelize
 module.exports = new Sequelize(
-    process.env.DB_NAME,
-    process.env.DB_USER,
-    process.env.DB_PASSWORD,
+    process.env.DB_NAME, // Имя базы данных
+    process.env.DB_USER, // Имя пользователя
+    process.env.DB_PASSWORD, // Пароль
     {
-        dialect:'postgres',
-        host: process.env.DB_HOST,
-        port: process.env.DB_PORT
+        dialect:'postgres', // Диалект SQL
+        host: process.env.DB_HOST, // Хост базы данных
+        port: process.env.DB_PORT // Порт базы данных
     }
 )

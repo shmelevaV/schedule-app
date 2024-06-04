@@ -11,23 +11,25 @@ import "react-datepicker/dist/react-datepicker.css";
 
 registerLocale('ru', ru);
 
+// Компонент модального окна для создания урока
 const CreateLessonModal = ({show, onHide}) => {
 
+    // Создаем необходимые состояния
     const [numOfLesson, setNumOfLesson] = useState('');
     const [firstDate, setFirstDate] = useState('');
     const [lastDate, setLastDate] = useState('');
     const [period, setPeriod] = useState('');
-
     const [groups, setGroups] = useState([]);
     const [disciplines, setDisciplines] = useState([]);
     const [teachers, setTeachers] = useState([]);
     const [auditoriums, setAuditoriums] = useState([]);
-
+    
     const [selectedGroup, setSelectedGroup] = useState(null);
     const [selectedDiscipline, setSelectedDiscipline] = useState(null);
     const [selectedTeacher, setSelectedTeacher] = useState(null);
     const [selectedAuditorium, setSelectedAuditorium] = useState(null);
 
+    // Используем useEffect для получения данных из БД при монтировании компонента
     useEffect(() => {
         getGroups().then(data => setGroups(data));
         getDisciplines().then(data => setDisciplines(data));
@@ -35,6 +37,7 @@ const CreateLessonModal = ({show, onHide}) => {
         getAuds().then(data => setAuditoriums(data));
     }, []);
 
+    // Обработчик нажатия кнопки "Добавить"
     const handleAddClick = async () => {
         if (selectedGroup && selectedDiscipline && selectedTeacher && selectedAuditorium && numOfLesson && firstDate && lastDate && period) {
             await createLesson(Number(numOfLesson),firstDate,Number(period),lastDate,selectedTeacher,selectedDiscipline,selectedGroup,selectedAuditorium);
@@ -46,8 +49,8 @@ const CreateLessonModal = ({show, onHide}) => {
         setSelectedAuditorium(null);
     };
 
+    // Функция для проверки валидности даты
     const isDateValid = (date) => {
-        // Проверка даты на валидность
         return date instanceof Date && !isNaN(date);
     };
 
@@ -147,5 +150,3 @@ const CreateLessonModal = ({show, onHide}) => {
 }
 
 export default CreateLessonModal;
-
-

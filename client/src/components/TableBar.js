@@ -1,15 +1,17 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext} from 'react';
 import ListGroup from 'react-bootstrap/ListGroup';
-import { Context } from "../index";
+import { Context } from "..";
 import { observer } from "mobx-react-lite";
-
+// Компонент выбора таблицы
 const TableBar = observer(() => {
+    //получаем данные из контекста
     const {table} = useContext(Context);
-
+    // Обработчик нажатия на элемент списка
     const handleItemClick = (tableName) => {
         table.setActiveTable(tableName);
     };
 
+    // Возвращаем разметку списка
     return (
         <ListGroup as="ul">
             <ListGroup.Item as="li" active={table.activeTable === 'Справочник заявок'} onClick={() => handleItemClick('Справочник заявок')} style={{cursor: 'pointer', padding: '10px', overflow: 'hidden', textOverflow: 'ellipsis'}}>Справочник заявок</ListGroup.Item>
@@ -25,5 +27,4 @@ const TableBar = observer(() => {
         </ListGroup>
     );
 })
-
 export default TableBar;

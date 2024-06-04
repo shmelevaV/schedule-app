@@ -1,29 +1,33 @@
 import React, { useState, useEffect, useContext } from "react";
 import {Table} from "react-bootstrap";
 import '../../styles/Table.css'; 
-import { Context } from "../../index"; 
+import { Context } from "../.."; 
 import { getLessons } from "../../http/lessonAPI";
 import { observer } from "mobx-react-lite";
 
-
+// Списки для дней недели, недель и уроков
 const daysOfWeek = ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'];
 const weeks = ['Четная', 'Нечетная'];
 const lessons = ['1 пара', '2 пара', '3 пара', '4 пара', '5 пара', '6 пара'];
 
+// Компонент общей таблицы
 const GeneralTable = observer( () =>{
-    const {startDate} = useContext(Context);
-    const [schedule, setSchedule] = useState([]); // Добавляем состояние для расписания 
-    const {aud} = useContext(Context);
+    const {startDate} = useContext(Context); // Получение контекста начальной даты
+    const [schedule, setSchedule] = useState([]); // Состояние для хранения расписания
+    const {aud} = useContext(Context); // Получение контекста аудитории
 
+    // Функция для получения данных о уроках из БД
     const fetchData = async () => {
          const scheduleData = await getLessons();
-         setSchedule(scheduleData); // Устанавливаем расписание
+         setSchedule(scheduleData); 
     };
 
+    // Используем useEffect для вызова fetchData при монтировании компонента
     useEffect(() => {
         fetchData();
     }, []);
 
+    // Функция для получения недель между двумя датами с учетом периода
     const getWeeks = (firstDate, lastDate, period) => {
  
         let weeks = [];
@@ -39,6 +43,7 @@ const GeneralTable = observer( () =>{
         return weeks;
     }
 
+    // Функция для получения содержимого ячейки таблицы
     const getCellContent = (day, weekType, lesson) => {
         let cellContent = [];
         for (let scheduleItem of schedule) {
@@ -53,7 +58,7 @@ const GeneralTable = observer( () =>{
         }
         return cellContent;
     }
-
+    // Возвращаем разметку таблицы
     return(
         <Table striped bordered hover>
             <thead>

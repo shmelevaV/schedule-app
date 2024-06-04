@@ -1,21 +1,21 @@
 import React, { useState } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 import { CreateGroup } from '../../http/groupAPI';
-
+// Компонент модального окна для создания группы
 const CreateGroupModal = ({show, onHide}) => {
+    // Состояние для хранения названия группы
     const [groupName, setGroupName] = useState('');
-
+    // Обработчик изменения ввода названия группы
     const handleInputChange = (event) => {
         setGroupName(event.target.value);
     };
-
+    // Обработчик нажатия кнопки "Добавить"
     const handleAddClick = async () => {
         if (groupName) {
             await CreateGroup(groupName);
             onHide();
         }
     };
-
     return (
         <Modal show={show} onHide={onHide}>
             <Modal.Header closeButton>
@@ -40,5 +40,4 @@ const CreateGroupModal = ({show, onHide}) => {
         </Modal>
     );
 }
-
 export default CreateGroupModal;

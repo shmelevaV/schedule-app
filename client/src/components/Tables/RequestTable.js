@@ -2,15 +2,19 @@ import React, { useEffect, useState } from "react";
 import {Table, Button} from "react-bootstrap";
 import { changeReqStatus, deleteReq, getReqLessons } from "../../http/lessonAPI";
 
+// Компонент таблицы заявок
 const RequestTable = ({ extraActions = false })=> {
 
+    // Состояние для хранения списка заявок
     const [scheduleReq, setScheduleReq] = useState([]);
 
+    // Функция для получения данных о заявках из БД
     const fetchData = async () => {
         const scheduleDataReq = await getReqLessons();
         setScheduleReq(scheduleDataReq);
     };
 
+    // Используем useEffect для вызова fetchData при монтировании компонента
     useEffect(() => {
         fetchData();
     }, []);
@@ -35,6 +39,7 @@ const RequestTable = ({ extraActions = false })=> {
                     </tr>
                 </thead>
                 <tbody>
+                    {/* Отображаем список заявок */}
                     {scheduleReq.sort((a, b) => b.id - a.id).map((item, index) => (
                         <tr key={index}>
                             <td>{item.id}</td>
@@ -49,10 +54,12 @@ const RequestTable = ({ extraActions = false })=> {
                             <td>{new Date(item.lastDate).toLocaleDateString()}</td>
                             <td>{item.status}</td>
                             <td>
+                                {/* Кнопка для удаления заявки */}
                                 <Button variant="danger"  onClick={async () => {await deleteReq(item.id);fetchData();}}>Удалить</Button>
                             </td>
                             {extraActions && (
                                 <>
+                                    {/* Кнопки для изменения статуса заявки */}
                                     <td>
                                         <Button variant="warning" onClick={async () => {await changeReqStatus(item.id, 'Отклонена');fetchData();}}>Отклонить</Button>
                                     </td>

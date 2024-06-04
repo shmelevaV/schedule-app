@@ -1,21 +1,21 @@
+// Импортируем необходимые модули и модели
 const ApiError = require('../error/ApiError')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const {UserAcc, TeacherList} = require('../models/models')
-
+// Функция для генерации JWT
 const generateJwt = (id, login, role, teacherListId) =>{
     return jwt.sign(
         {id, login, role, teacherListId},
         process.env.SECRET_KEY,
         {expiresIn: '24h'}
     )
-
 }
-
+// Определяем класс UserController
 class UserController{
+    // Метод для регистрации пользователя
     async registration(req,res,next){
         const {login,password,role}=req.body 
-
         if(!login || !password){
             return next(ApiError.badRequest('Неверный email или password'))
         }
@@ -29,6 +29,7 @@ class UserController{
         const token = generateJwt(user.id, user.login, user.role, user.teacherListId)
         return res.json({token})
     }
+    // Метод для входа пользователя
     async login(req,res, next){
         const {login, password}=req.body
         const user = await UserAcc.findOne({where: {login}})
@@ -42,40 +43,34 @@ class UserController{
         const token = generateJwt(user.id, user.login, user.role, user.teacherListId)
         return res.json({token})
     }
+    // Метод для проверки авторизации пользователя
     async check(req,res, next){
         const token = generateJwt(req.user.id,req.user.login,req.user.role, req.user.teacherListId)
         return res.json({token})
     }
 
+    // Метод для получения всех пользователей
     async getAll(req,res){
         const users = await UserAcc.findAll({
-
-            include: [{
-                model: TeacherList,
-                attributes: ['surname_N_P'], // указываем, что хотим включить только поле 'number'
-            },
-    ]
+        include: [{
+            model: TeacherList,
+            attributes: ['surname_N_P'], 
+        }]
         });
-   
         return res.json(users)
     }
+    // Метод для удаления пользователя по id
     async delete(req, res) {
         const {id} = req.params;
         if (!id) {
-            return res.status(400).json({message: "ID заявки является обязательным параметром"});
+            return res.status(400).json({message: "ID  является обязательным параметром"});
         }
-
         const request = await UserAcc.findOne({ where: { id } });
-
         if (!request) {
-            return res.status(404).json({message: "Заявка не найдена"});
+            return res.status(404).json({message: "Объект не найден"});
         }
-
         await request.destroy();
-
-        return res.json({message: "Заявка успешно удалена"});
+        return res.json({message: "Удаление прошло успешно"});
     }
-
 }
-
 module.exports = new UserController()

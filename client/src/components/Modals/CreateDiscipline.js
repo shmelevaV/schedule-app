@@ -2,25 +2,27 @@ import React, { useState } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 import { CreateDiscipline } from '../../http/disciplineAPI';
 
+// Компонент модального окна для создания дисциплины
 const CreateDisciplineModal = ({show, onHide}) => {
+    // Состояние для хранения названия и краткого названия дисциплины
     const [DisciplineName, setDisciplineName] = useState('');
     const [DisciplineShortName, setDisciplineShortName] = useState('');
 
+    // Обработчики изменения ввода названия и краткого названия дисциплины
     const handleNameInputChange = (event) => {
         setDisciplineName(event.target.value);
     };
-
     const handleShortNameInputChange = (event) => {
         setDisciplineShortName(event.target.value);
     };
 
+    // Обработчик нажатия кнопки "Добавить"
     const handleAddClick = async () => {
         if (DisciplineName && DisciplineShortName) {
             await CreateDiscipline(DisciplineName, DisciplineShortName);
             onHide();
         }
     };
-
     return (
         <Modal show={show} onHide={onHide}>
             <Modal.Header closeButton>
@@ -49,5 +51,4 @@ const CreateDisciplineModal = ({show, onHide}) => {
         </Modal>
     );
 }
-
 export default CreateDisciplineModal;

@@ -1,5 +1,9 @@
+// Импортируем модуль Router из express
 const Router = require('express')
+// Создаем новый экземпляр Router
 const router = new Router()
+
+// Импортируем роутеры для различных частей приложения
 const userRouter = require('./userRouter')
 const departmentRouter = require('./departmentRouter')
 const positionRouter = require('./positionRouter')
@@ -11,6 +15,7 @@ const disciplineRouter = require('./disciplineRouter')
 const groupRouter = require('./groupRouter')
 const requestRouter = require('./requestRouter')
 
+// Используем роутеры для обработки запросов к определенным путям
 router.use('/department', departmentRouter)
 router.use('/user',userRouter)
 router.use('/position',positionRouter)
@@ -22,4 +27,5 @@ router.use('/discipline',disciplineRouter)
 router.use('/group',groupRouter)
 router.use('/request',requestRouter)
 
+// Экспортируем роутер
 module.exports = router

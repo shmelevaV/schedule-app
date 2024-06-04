@@ -1,44 +1,46 @@
+// Импортируем sequelize и DataTypes
 const sequelize = require('../db')
 const {DataTypes} = require('sequelize')
 
+// Определяем модели для различных таблиц в базе данных
 const UserAcc = sequelize.define('user_acc',{
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     login: {type: DataTypes.STRING, unique: true},
     password: {type: DataTypes.STRING},
-    role: {type: DataTypes.STRING, defaultValue: "USER"},
+    role: {type: DataTypes.STRING, defaultValue: "USER"}, // роль по умолчанию - "USER"
 })
 
 const TeacherList = sequelize.define('teacher_list',{
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
-    surname_N_P:{type: DataTypes.STRING},
+    surname_N_P:{type: DataTypes.STRING}, // фамилия, имя и отчество преподавателя
 })
 
 const PositionList = sequelize.define('position_list',{
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
-    name:{type: DataTypes.STRING, unique: true},
-    short_name:{type: DataTypes.STRING},
+    name:{type: DataTypes.STRING, unique: true}, // название должности
+    short_name:{type: DataTypes.STRING}, // сокращенное название должности
 })
 
 const DepartmentList = sequelize.define('department_list',{
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
-    name:{type: DataTypes.STRING, unique: true},
+    name:{type: DataTypes.STRING, unique: true}, // название отдела
 })
 
 const DisciplineList = sequelize.define('discipline_list',{
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
-    name:{type: DataTypes.STRING, unique: true},
-    short_name:{type: DataTypes.STRING},
+    name:{type: DataTypes.STRING, unique: true}, // название дисциплины
+    short_name:{type: DataTypes.STRING}, // сокращенное название дисциплины
 })
 
 const GroupList = sequelize.define('group_list',{
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
-    name:{type: DataTypes.STRING, unique: true},
+    name:{type: DataTypes.STRING, unique: true}, // название группы
 })
 
 const AuditoriumList = sequelize.define('auditorium_list',{
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     number:{type: DataTypes.STRING, unique: true}, // номер аудитории
-    capacity:{type: DataTypes.INTEGER}, //вместимость 
+    capacity:{type: DataTypes.INTEGER}, // вместимость аудитории
 })
 
 const ClassSchedule = sequelize.define('class_schedule',{
@@ -64,7 +66,7 @@ const TypeList = sequelize.define('type_list',{
     name:{type: DataTypes.STRING, unique: true},
 })
 
-
+// Описываем связи между моделями
 TeacherList.hasMany(ClassSchedule, { onDelete: 'CASCADE' })
 ClassSchedule.belongsTo(TeacherList, { onDelete: 'CASCADE' })
 
@@ -101,7 +103,7 @@ ClassSchedule.belongsTo(AuditoriumList, { onDelete: 'CASCADE' })
 TypeList.hasMany(AuditoriumList, { onDelete: 'CASCADE' })
 AuditoriumList.belongsTo(TypeList, { onDelete: 'CASCADE' })
 
-
+// Экспортируем модели
 module.exports = {
     UserAcc,
     TeacherList,

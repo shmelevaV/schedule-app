@@ -1,31 +1,36 @@
 import React, { useEffect, useState } from "react";
-import {Table, Button, Row, Col} from "react-bootstrap";
+import {Table, Button} from "react-bootstrap";
 import { deleteLesson, getLessons } from "../../http/lessonAPI";
 import CreateLessonModal from "../Modals/CreateLesson";
 
+// Компонент таблицы уроков
 const LessonsTable = () => {
-
+    // Состояние для хранения списка уроков
     const [schedule, setSchedule] = useState([]);
 
+    // Функция для получения данных о уроках из БД
     const fetchData = async () => {
         const scheduleData = await getLessons();
         scheduleData.sort((a, b) => a.id - b.id);
-
         setSchedule(scheduleData);
     };
+
+    // Состояние для управления модальным окном создания урока
     const [showAudTypeModal, setShowAudTypeModal] = useState(false);
 
+    // Обработчик открытия модального окна создания урока
     const handleShowAudTypeModal = () => {
         setShowAudTypeModal(true);
     };
+
+    // Используем useEffect для вызова fetchData при монтировании компонента
     useEffect(() => {
         fetchData();
     }, []);
-
+    // Возвращаем разметку компонента
     return (
         <>
             <Button variant="primary" onClick={handleShowAudTypeModal} className="mt-3">Добавить занятие</Button>
-
             <Table striped bordered hover className="mt-3">
                 <thead>
                     <tr>
@@ -59,9 +64,5 @@ const LessonsTable = () => {
                 </tbody>
             </Table>
             <CreateLessonModal show={showAudTypeModal} onHide={() => {setShowAudTypeModal(false);fetchData()}} />
-
-        </>
-    );
-};
-
+        </>);};
 export default LessonsTable;

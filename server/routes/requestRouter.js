@@ -1,11 +1,9 @@
 const Router = require('express')
 const router = new Router()
 const requestController = require('../controllers/requestController')
-const checkRole = require('../middleware/checkRoleMiddleware')
-
-router.post('/', requestController.create)
-router.get('/', requestController.getAll)
-router.put('/status', requestController.updateStatus)
-router.delete('/:id', requestController.delete);
-
+// Определяем маршруты для различных HTTP-запросов
+router.post('/', requestController.create) // Добавление новой заявки
+router.get('/', requestController.getAll) // Получение всех заявок
+router.put('/status', requestController.updateStatus) // Изменение статуса заявки
+router.delete('/:id', requestController.delete); // Удаление заявки по ID
 module.exports = router

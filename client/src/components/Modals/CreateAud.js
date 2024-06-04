@@ -1,21 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
-import { CreateTeacher } from '../../http/TeacherAPI';
 import { getTypes } from '../../http/typeAPI';
 import { CreateAud } from '../../http/audAPI';
 
+// Компонент модального окна для создания аудитории
 const CreateAudModal = ({show, onHide}) => {
+    
+    // Создаем необходимые состояния
     const [AudNumber, setAudNumber] = useState('');
     const [AudCapacity, setAudCapacity] = useState('');
-
     const [types, setTypes] = useState([]);
-
     const [selectedType, setSelectedType] = useState(null);
 
+    // Функция для получения данных о типах аудиторий из БД
     useEffect(() => {
         getTypes().then(data => setTypes(data));
     }, []);
 
+    // Обработчики изменения ввода номера и вместимости аудитории
     const handleAudNumberInputChange = (event) => {
         setAudNumber(event.target.value);
     };
@@ -23,6 +25,7 @@ const CreateAudModal = ({show, onHide}) => {
         setAudCapacity(event.target.value);
     };
 
+    // Обработчик нажатия кнопки "Добавить"
     const handleAddClick = async () => {
         if (AudNumber && AudCapacity && selectedType) {
             await CreateAud(AudNumber,Number(AudCapacity),selectedType);

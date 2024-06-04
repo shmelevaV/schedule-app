@@ -4,28 +4,27 @@ import { CreateTeacher } from '../../http/TeacherAPI';
 import { getPositions } from '../../http/positionAPI';
 import { getDepartments } from '../../http/departmentAPI';
 
+// Компонент модального окна для создания преподавателя
 const CreateTeacherModal = ({show, onHide}) => {
+    // Создаем необходимые состояния
     const [TeacherSurname_N_P, setTeacherSurname_N_P] = useState('');
-    const [PositionName, setPositionName] = useState('');
-    const [DepartmentName, setDepartmentName] = useState('');
-
     const [positions, setPositions] = useState([]);
     const [departments, setDepartments] = useState([]);
-
     const [selectedPosition, setSelectedPosition] = useState(null);
     const [selectedDepartment, setSelectedDepartment] = useState(null);
 
+    // Используем useEffect для получения данных из БД при монтировании компонента
     useEffect(() => {
         getPositions().then(data => setPositions(data));
         getDepartments().then(data => setDepartments(data));
     }, []);
 
-
-
+    // Обработчик изменения ввода ФИО преподавателя
     const handleNameInputChange = (event) => {
         setTeacherSurname_N_P(event.target.value);
     };
 
+    // Обработчик нажатия кнопки "Добавить"
     const handleAddClick = async () => {
         if (TeacherSurname_N_P && selectedDepartment && selectedPosition) {
             await CreateTeacher(TeacherSurname_N_P,selectedPosition,selectedDepartment);
@@ -78,5 +77,4 @@ const CreateTeacherModal = ({show, onHide}) => {
         </Modal>
     );
 }
-
 export default CreateTeacherModal;
