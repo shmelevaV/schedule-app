@@ -8,7 +8,7 @@ import { observer } from "mobx-react-lite";
 // Списки для дней недели, недель и уроков
 const daysOfWeek = ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'];
 const weeks = ['Четная', 'Нечетная'];
-const lessons = ['1 пара', '2 пара', '3 пара', '4 пара', '5 пара', '6 пара'];
+const lessons = ['1 пара', '2 пара', '3 пара', '4 пара', '5 пара', '6 пара', '7 пара'];
 
 // Компонент общей таблицы
 const GeneralTable = observer( () =>{
@@ -43,7 +43,6 @@ const GeneralTable = observer( () =>{
         return weeks;
     }
 
-    // Функция для получения содержимого ячейки таблицы
     const getCellContent = (day, weekType, lesson) => {
         let cellContent = [];
         for (let scheduleItem of schedule) {
@@ -52,12 +51,17 @@ const GeneralTable = observer( () =>{
                 let weeks = getWeeks(scheduleItem.firstDate, scheduleItem.lastDate, scheduleItem.period);
                 let filteredWeeks = weeks.filter(week => week % 2 === weekType % 2);
                 if (filteredWeeks.length > 0) {
-                    cellContent.push(<div key={scheduleItem.id}>{`${scheduleItem.group_list.name} ${scheduleItem.discipline_list.short_name} (${filteredWeeks.join(', ')})`}</div>);
+                    // Проверяем, есть ли уже группа в cellContent
+                    let groupExists = cellContent.some(content => content.props.children.includes(scheduleItem.group_list.name));
+                    if (!groupExists) {
+                        cellContent.push(<div key={scheduleItem.id}>{`${scheduleItem.group_list.name} ${scheduleItem.discipline_list.short_name} (${filteredWeeks.join(', ')})`}</div>);
+                    }
                 }
             }
         }
         return cellContent;
     }
+    
     // Возвращаем разметку таблицы
     return(
         <Table striped bordered hover>

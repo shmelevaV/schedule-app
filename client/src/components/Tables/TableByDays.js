@@ -9,7 +9,7 @@ import EditCellModal from "../Modals/Modal";
 const TableByDays = () => {
     // Списки для номеров занятий и дней недели
     const daysOfWeek = ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'];
-    const lessons = ['1 пара', '2 пара', '3 пара', '4 пара', '5 пара', '6 пара'];
+    const lessons = ['1 пара', '2 пара', '3 пара', '4 пара', '5 пара', '6 пара', '7 пара'];
     // Получаем необходимые данные из контекста 
     const {aud} = useContext(Context);
     const {week} = useContext(Context);
