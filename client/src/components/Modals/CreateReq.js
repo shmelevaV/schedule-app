@@ -4,15 +4,16 @@ import { getTeachers } from '../../http/TeacherAPI';
 import { getGroups } from '../../http/groupAPI';
 import { getDisciplines } from '../../http/disciplineAPI';
 import { getAuds } from '../../http/audAPI';
-import { createLesson } from '../../http/lessonAPI';
+import {  createReqLesson } from '../../http/lessonAPI';
 import DatePicker, { registerLocale } from "react-datepicker";
 import ru from 'date-fns/locale/ru';
 import "react-datepicker/dist/react-datepicker.css";
+import '../../styles/Table.css'; 
 
 registerLocale('ru', ru);
 
 // Компонент модального окна для создания урока
-const CreateLessonModal = ({show, onHide}) => {
+const CreateReqModal = ({show, onHide}) => {
 
     // Создаем необходимые состояния
     const [numOfLesson, setNumOfLesson] = useState('');
@@ -40,7 +41,9 @@ const CreateLessonModal = ({show, onHide}) => {
     // Обработчик нажатия кнопки "Добавить"
     const handleAddClick = async () => {
         if (selectedGroup && selectedDiscipline && selectedTeacher && selectedAuditorium && numOfLesson && firstDate && lastDate && period) {
-            await createLesson(Number(numOfLesson),firstDate,Number(period),lastDate,selectedTeacher,selectedDiscipline,selectedGroup,selectedAuditorium);
+            const submissionDate = new Date().toISOString().split('T')[0];
+            const status = "Рассматривается";
+            await createReqLesson(Number(numOfLesson),submissionDate,firstDate,Number(period),lastDate,status,selectedTeacher,selectedDiscipline,selectedGroup,selectedAuditorium);
             onHide();
         }
         setSelectedGroup(null);
@@ -77,6 +80,7 @@ const CreateLessonModal = ({show, onHide}) => {
                             onChange={date => setFirstDate(date)} 
                             dateFormat="yyyy-MM-dd"
                             locale="ru"
+                            placeholderText="Выберите дату первого занятия"
                             className={`form-control`}
                         />
                     </Form.Group>
@@ -96,6 +100,7 @@ const CreateLessonModal = ({show, onHide}) => {
                             onChange={date => setLastDate(date)} 
                             dateFormat="yyyy-MM-dd"
                             locale="ru"
+                            placeholderText="Выберите дату последнего занятия"
                             className={`form-control`}
                         />
                     </Form.Group>
@@ -149,4 +154,4 @@ const CreateLessonModal = ({show, onHide}) => {
     );
 }
 
-export default CreateLessonModal;
+export default CreateReqModal;

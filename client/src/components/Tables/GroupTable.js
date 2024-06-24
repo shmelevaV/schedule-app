@@ -41,7 +41,7 @@ const GroupTable = () => {
                         <tr key={index}>
                             <td>{item.id}</td>
                             <td>{item.name}</td>
-                            <td><Button variant="danger" onClick={async () => {await deleteGroup(item.id);fetchData();}}>Удалить</Button></td>
+                            <td><Button variant="outline-danger" onClick={async () => {await deleteGroup(item.id);fetchData();}}>Удалить</Button></td>
                         </tr>
                     ))}
                 </tbody>

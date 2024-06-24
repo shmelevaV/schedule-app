@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import {Table, Button} from "react-bootstrap";
 import { changeReqStatus, deleteReq, getReqLessons } from "../../http/lessonAPI";
+import CreateReqModal from "../Modals/CreateReq";
 
 // Компонент таблицы заявок
 const RequestTable = ({ extraActions = false })=> {
@@ -19,9 +20,17 @@ const RequestTable = ({ extraActions = false })=> {
         fetchData();
     }, []);
 
+    // Состояние для управления модальным окном создания урока
+    const [showRequestModal, setShowRequestModal] = useState(false);
+
+    // Обработчик открытия модального окна создания урока
+    const handleShowRequestModal = () => {
+        setShowRequestModal(true);
+    };
     return (
         <>
-            <Table striped bordered hover>
+        <Button variant="primary" onClick={handleShowRequestModal} className="mt-3">Добавить заявку</Button>
+            <Table striped bordered hover className="mt-3">
                 <thead>
                     <tr>
                         <th>№ заявки</th>
@@ -55,16 +64,16 @@ const RequestTable = ({ extraActions = false })=> {
                             <td>{item.status}</td>
                             <td>
                                 {/* Кнопка для удаления заявки */}
-                                <Button variant="danger"  onClick={async () => {await deleteReq(item.id);fetchData();}}>Удалить</Button>
+                                <Button variant="outline-danger"  onClick={async () => {await deleteReq(item.id);fetchData();}}>Удалить</Button>
                             </td>
                             {extraActions && (
                                 <>
                                     {/* Кнопки для изменения статуса заявки */}
                                     <td>
-                                        <Button variant="warning" onClick={async () => {await changeReqStatus(item.id, 'Отклонена');fetchData();}}>Отклонить</Button>
+                                        <Button variant="outline-primary" onClick={async () => {await changeReqStatus(item.id, 'Отклонена');fetchData();}}>Отклонить</Button>
                                     </td>
                                     <td>
-                                        <Button variant="success" onClick={async () => {await changeReqStatus(item.id, 'Одобрена');fetchData();}}>Одобрить</Button>
+                                        <Button variant="outline-success" onClick={async () => {await changeReqStatus(item.id, 'Одобрена');fetchData();}}>Одобрить</Button>
                                     </td>
                                 </>
                             )}
@@ -72,6 +81,7 @@ const RequestTable = ({ extraActions = false })=> {
                     ))}
                 </tbody>
             </Table>
+            <CreateReqModal show={showRequestModal} onHide={() => {setShowRequestModal(false);fetchData()}} />
         </>
     );
 };

@@ -16,11 +16,11 @@ const LessonsTable = () => {
     };
 
     // Состояние для управления модальным окном создания урока
-    const [showAudTypeModal, setShowAudTypeModal] = useState(false);
+    const [showLessonModal, setShowLessonModal] = useState(false);
 
     // Обработчик открытия модального окна создания урока
-    const handleShowAudTypeModal = () => {
-        setShowAudTypeModal(true);
+    const handleShowLessonModal = () => {
+        setShowLessonModal(true);
     };
 
     // Используем useEffect для вызова fetchData при монтировании компонента
@@ -30,7 +30,7 @@ const LessonsTable = () => {
     // Возвращаем разметку компонента
     return (
         <>
-            <Button variant="primary" onClick={handleShowAudTypeModal} className="mt-3">Добавить занятие</Button>
+            <Button variant="primary" onClick={handleShowLessonModal} className="mt-3">Добавить занятие</Button>
             <Table striped bordered hover className="mt-3">
                 <thead>
                     <tr>
@@ -58,11 +58,11 @@ const LessonsTable = () => {
                             <td>{new Date(item.firstDate).toLocaleDateString()}</td>
                             <td>{item.period}</td>
                             <td>{new Date(item.lastDate).toLocaleDateString()}</td>
-                            <td><Button variant="danger"  onClick={async () => {await deleteLesson(item.id);fetchData();}}>Удалить</Button></td>
+                            <td><Button variant="outline-danger"  onClick={async () => {await deleteLesson(item.id);fetchData();}}>Удалить</Button></td>
                         </tr>
                     ))}
                 </tbody>
             </Table>
-            <CreateLessonModal show={showAudTypeModal} onHide={() => {setShowAudTypeModal(false);fetchData()}} />
+            <CreateLessonModal show={showLessonModal} onHide={() => {setShowLessonModal(false);fetchData()}} />
         </>);};
 export default LessonsTable;

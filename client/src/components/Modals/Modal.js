@@ -192,7 +192,7 @@ const EditCellModal = ({ show, handleClose, selectedCell, getSelectedSchedule,up
 </div>
 <div style={{textAlign: "center"}}>
 <Form.Label style={{fontWeight: "bold"}} className="mt-1">День недели</Form.Label>
-<Form.Control type="text" value={day.dayOfWeek} />
+<Form.Control type="text"  value={selectedCell?.day || day.dayOfWeek} /> 
 </div>
 <div style={{textAlign: "center"}}>
 <Form.Label style={{fontWeight: "bold"}} className="mt-1">Дата</Form.Label>
@@ -230,6 +230,9 @@ const EditCellModal = ({ show, handleClose, selectedCell, getSelectedSchedule,up
 {[1, 2, 4].map(num => (<option value={num}>{num}</option>))}
 </Form.Select>
 </div>
+
+
+
 <div style={{textAlign: "center"}}>
 <Form.Label style={{fontWeight: "bold", display:"block"}} className="mt-1">Дата последнего занятия</Form.Label>
 <DatePicker 
@@ -237,26 +240,30 @@ selected={lastDate}
 onChange={date => setLastDate(date)} 
 dateFormat="yyyy-MM-dd"
 locale="ru"
-className={`form-control ${isDateValid(lastDate) ? 'is-valid' : 'is-invalid'}`}/>
+placeholderText="Выберите дату"
+className={`form-control custom-datepicker`}/>
 </div>
+
+
+
 <div style={{textAlign: "center"}}>
 <Form.Label style={{fontWeight: "bold"}} className="mt-1">Дисциплина</Form.Label>
 <Form.Select value={selectedDiscipline} onChange={e => setSelectedDiscipline(e.target.value)}>
-<option value="">Выберите дисциплину</option>
-{disciplines.map(discipline => (<option value={discipline.id}>{discipline.name}</option>))}
+  <option value="" disabled selected hidden>Выберите дисциплину</option>
+  {disciplines.map(discipline => (<option value={discipline.id}>{discipline.name}</option>))}
 </Form.Select>
 </div>
 <div style={{textAlign: "center"}}>
 <Form.Label style={{fontWeight: "bold"}} className="mt-1">Преподаватель</Form.Label>
 <Form.Select value={selectedTeacher} onChange={e => setSelectedTeacher(e.target.value)}>
-<option value="">Выберите преподавателя</option>
+<option value="" disabled selected hidden>Выберите преподавателя</option>
 {teachers.map(teacher => (<option value={teacher.id}>{teacher.surname_N_P}</option>))}
 </Form.Select>
 </div>
 <div style={{textAlign: "center"}}>
 <Form.Label style={{fontWeight: "bold"}} className="mt-1">Группа</Form.Label>
 <Form.Select value={selectedGroup} onChange={e => setSelectedGroup(e.target.value)}>
-<option value="">Выберите группу</option>
+<option value="" disabled selected hidden>Выберите группу</option>
 {groups.map(group => (<option value={group.id}>{group.name}</option>))}
 </Form.Select>
 </div>

@@ -50,7 +50,7 @@ const TeacherTable = () => {
                             <td>{item.surname_N_P}</td>
                             <td>{item.department_list && item.department_list.name ? item.department_list.name : 'NULL'}</td>
                             <td>{item.position_list && item.position_list.short_name ? item.position_list.short_name : 'NULL'}</td>
-                            <td><Button variant="danger" onClick={async () => {await deleteTeacher(item.id);fetchData();}}>Удалить</Button></td>
+                            <td><Button variant="outline-danger" onClick={async () => {await deleteTeacher(item.id);fetchData();}}>Удалить</Button></td>
                         </tr>
                     ))}
                 </tbody>

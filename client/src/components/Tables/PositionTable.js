@@ -48,7 +48,7 @@ const PositionTable = () => {
                             <td>{item.id}</td>
                             <td>{item.name}</td>
                             <td>{item.short_name}</td>
-                            <td><Button variant="danger" onClick={async () => {await deletePosition(item.id);fetchData();}}>Удалить</Button></td>
+                            <td><Button variant="outline-danger" onClick={async () => {await deletePosition(item.id);fetchData();}}>Удалить</Button></td>
                         </tr>
                     ))}
                 </tbody>

@@ -42,7 +42,7 @@ const DisciplineTable = () => {
                             <td>{item.id}</td>
                             <td>{item.name}</td>
                             <td>{item.short_name}</td>
-                            <td><Button variant="danger" onClick={async () => {await deleteDiscipline(item.id);fetchData();}}>Удалить</Button></td>
+                            <td><Button variant="outline-danger" onClick={async () => {await deleteDiscipline(item.id);fetchData();}}>Удалить</Button></td>
                         </tr>
                     ))}
                 </tbody>

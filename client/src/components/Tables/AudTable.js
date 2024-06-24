@@ -49,7 +49,7 @@ const AudTable = () => {
                             <td>{item.number}</td>
                             <td>{item.capacity}</td>
                             <td>{item.type_list && item.type_list.name ? item.type_list.name : 'NULL'}</td>
-                            <td><Button variant="danger"  onClick={async () => {await deleteAud(item.id);fetchData();}}>Удалить</Button></td>
+                            <td><Button variant="outline-danger"  onClick={async () => {await deleteAud(item.id);fetchData();}}>Удалить</Button></td>
                         </tr>
                     ))}
                 </tbody>

@@ -40,7 +40,7 @@ const UsersTable = () => {
                             <td>{item.password}</td>
                             <td>{item.role}</td>
                             <td>{item.teacher_list.surname_N_P}</td>
-                            <td><Button variant="danger" onClick={async () => {await deleteUser(item.id);fetchData();}}>Удалить</Button></td>
+                            <td><Button variant="outline-danger" onClick={async () => {await deleteUser(item.id);fetchData();}}>Удалить</Button></td>
                         </tr>
                     ))}
                 </tbody>
