@@ -12,6 +12,7 @@ module.exports = function (req, res, next){
         const decoded = jwt.verify(token, process.env.SECRET_KEY)
         // Сохраняем расшифрованные данные токена в объекте запроса
         req.user = decoded
+
         // Переходим к следующему middleware
         next()
     } catch(e){

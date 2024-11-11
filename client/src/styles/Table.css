@@ -13,3 +13,6 @@
 .custom-datepicker::placeholder {
     color: #000;
   }
+.about_info{
+    justify-content: space-between;
+}

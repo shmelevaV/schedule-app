@@ -6,8 +6,8 @@ export default class StartDateStore {
 
     // Конструктор класса
     constructor() {
-        // Инициализация даты начала семестра значением "2024-02-05"
-        this._startDate=new Date("2024-02-05");
+        // Инициализация даты начала семестра значением "2024-09-02"
+        this._startDate=new Date("2024-09-02");
         // Применение функции makeAutoObservable к текущему экземпляру класса
         makeAutoObservable(this);
     }
