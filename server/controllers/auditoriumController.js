@@ -1,8 +1,12 @@
 const {AuditoriumList, TypeList} = require('../models/models')
+const sequelize = require('../db') 
 // Определяем класс AuditoriumController
 class AuditoriumController{
     // Метод для создания новой аудитории
     async create(req,res){
+        const maxIdResult = await sequelize.query("SELECT MAX(id) FROM auditorium_lists");
+        const maxId = maxIdResult[0][0].max;
+        await sequelize.query(`ALTER SEQUENCE auditorium_lists_id_seq RESTART WITH ${maxId + 1}`);
         const {number,capacity,typeListId} = req.body
         const type = await AuditoriumList.create({number,capacity,typeListId})
         return res.json(type)

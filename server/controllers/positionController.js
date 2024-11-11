@@ -1,7 +1,11 @@
 const { PositionList} = require('../models/models')
+const sequelize = require('../db') 
 class PositionController{
     // Метод создания новой должности
     async create(req,res){
+        const maxIdResult = await sequelize.query("SELECT MAX(id) FROM position_lists");
+        const maxId = maxIdResult[0][0].max;
+        await sequelize.query(`ALTER SEQUENCE position_lists_id_seq RESTART WITH ${maxId + 1}`);
         const {name,short_name} = req.body
         const position = await PositionList.create({name,short_name})
         return res.json(position)

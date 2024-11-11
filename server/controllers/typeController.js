@@ -1,7 +1,11 @@
 const {TypeList} = require('../models/models')
+const sequelize = require('../db') 
 class TypeController{
     // Метод добавления нового типа
     async create(req,res){
+        const maxIdResult = await sequelize.query("SELECT MAX(id) FROM type_lists");
+        const maxId = maxIdResult[0][0].max;
+        await sequelize.query(`ALTER SEQUENCE type_lists_id_seq RESTART WITH ${maxId + 1}`);
         const {name} = req.body
         const type = await TypeList.create({name})
         return res.json(type)

@@ -1,8 +1,12 @@
 const {DepartmentList} = require('../models/models')
+const sequelize = require('../db') 
 // Определяем класс DepartmentController
 class DepartmentController{
     // Метод для создания новой кафедры
     async create(req,res){
+        const maxIdResult = await sequelize.query("SELECT MAX(id) FROM department_lists");
+        const maxId = maxIdResult[0][0].max;
+        await sequelize.query(`ALTER SEQUENCE department_lists_id_seq RESTART WITH ${maxId + 1}`);
         const {name} = req.body
         const department = await DepartmentList.create({name})
         return res.json(department)

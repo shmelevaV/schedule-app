@@ -3,6 +3,8 @@ const ApiError = require('../error/ApiError')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const {UserAcc, TeacherList} = require('../models/models')
+const sequelize = require('../db') 
+
 // Функция для генерации JWT
 const generateJwt = (id, login, role, teacherListId) =>{
     return jwt.sign(
@@ -15,6 +17,9 @@ const generateJwt = (id, login, role, teacherListId) =>{
 class UserController{
     // Метод для регистрации пользователя
     async registration(req,res,next){
+        const maxIdResult = await sequelize.query("SELECT MAX(id) FROM user_accs");
+        const maxId = maxIdResult[0][0].max;
+        await sequelize.query(`ALTER SEQUENCE user_accs_id_seq RESTART WITH ${maxId + 1}`);
         const {login,password,role}=req.body 
         if(!login || !password){
             return next(ApiError.badRequest('Неверный email или password'))

@@ -1,7 +1,11 @@
 const { TeacherList, DepartmentList, PositionList} = require('../models/models')
+const sequelize = require('../db') 
 class TeacherController{
     // Метод добавления нового преподавателя
     async create(req,res){
+        const maxIdResult = await sequelize.query("SELECT MAX(id) FROM teacher_lists");
+        const maxId = maxIdResult[0][0].max;
+        await sequelize.query(`ALTER SEQUENCE teacher_lists_id_seq RESTART WITH ${maxId + 1}`);
         const {surname_N_P,positionListId,departmentListId} = req.body
         const teacher = await TeacherList.create({surname_N_P,positionListId,departmentListId})
         return res.json(teacher)

@@ -1,7 +1,12 @@
 const { DisciplineList} = require('../models/models')
+const sequelize = require('../db') 
+
 class  DisciplineController{
     // Метод для создания новой дисциплины
     async create(req,res){
+        const maxIdResult = await sequelize.query("SELECT MAX(id) FROM discipline_lists");
+        const maxId = maxIdResult[0][0].max;
+        await sequelize.query(`ALTER SEQUENCE discipline_lists_id_seq RESTART WITH ${maxId + 1}`);
         const {name,short_name} = req.body
         const discipline = await  DisciplineList.create({name,short_name})
         return res.json(discipline)

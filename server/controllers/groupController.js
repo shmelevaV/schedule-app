@@ -1,7 +1,11 @@
 const {GroupList} = require('../models/models')
+const sequelize = require('../db') 
 class GroupController{
     // Метод создания новой группы
     async create(req,res){
+        const maxIdResult = await sequelize.query("SELECT MAX(id) FROM group_lists");
+        const maxId = maxIdResult[0][0].max;
+        await sequelize.query(`ALTER SEQUENCE group_lists_id_seq RESTART WITH ${maxId + 1}`);
         const {name} = req.body
         const group = await GroupList.create({name})
         return res.json(group)
