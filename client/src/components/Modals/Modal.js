@@ -53,11 +53,7 @@ const EditCellModal = ({
     getGroups().then((data) => setGroups(data));
     getLessons().then((data) => setSchedule(data));
     getReqLessons().then((data) => setScheduleReq(data));
-    console.log(schedule,teachers)
   }, []);
-
-     useEffect(() => { console.log(selectedTeacher); })
-
   // Проверка даты на валидность
   const isDateValid = (date) => {
     return date instanceof Date && !isNaN(date);

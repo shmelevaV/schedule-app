@@ -12,9 +12,9 @@ const lessons = ['1 пара', '2 пара', '3 пара', '4 пара', '5 па
 
 // Компонент общей таблицы
 const GeneralTable = observer( () =>{
-    const {startDate} = useContext(Context); // Получение контекста начальной даты
-    const [schedule, setSchedule] = useState([]); // Состояние для хранения расписания
-    const {aud} = useContext(Context); // Получение контекста аудитории
+    const {startDate} = useContext(Context); 
+    const [schedule, setSchedule] = useState([]); 
+    const {aud} = useContext(Context); 
 
     // Функция для получения данных о уроках из БД
     const fetchData = async () => {
@@ -40,24 +40,30 @@ const GeneralTable = observer( () =>{
             }
             currentDate.setDate(currentDate.getDate() + 7 * period);
         }
+        console.log(`First Date: ${firstDate}\nLast Date: ${lastDate}\nPeriod: ${period}\nWeeks: ${weeks}`);
         return weeks;
+
     }
 
     const getCellContent = (day, weekType, lesson) => {
         let cellContent = [];
+
         for (let scheduleItem of schedule) {
-            let scheduleItemDayOfWeek = new Date(scheduleItem.firstDate).getDay();
-            if (aud.numberOfAud === scheduleItem.auditorium_list.number && scheduleItemDayOfWeek === day && scheduleItem.number === lesson) {
-                let weeks = getWeeks(scheduleItem.firstDate, scheduleItem.lastDate, scheduleItem.period);
-                let filteredWeeks = weeks.filter(week => week % 2 === weekType % 2);
-                if (filteredWeeks.length > 0) {
-                    // Проверяем, есть ли уже группа в cellContent
-                    let groupExists = cellContent.some(content => content.props.children.includes(scheduleItem.group_list.name));
-                    if (!groupExists) {
-                        cellContent.push(<div key={scheduleItem.id}>{`${scheduleItem.group_list.name} ${scheduleItem.discipline_list.short_name} (${filteredWeeks.join(', ')})`}</div>);
+            if(new Date(scheduleItem.lastDate) >= new Date(startDate.startDate)){
+                let scheduleItemDayOfWeek = new Date(scheduleItem.firstDate).getDay();
+                if (aud.numberOfAud === scheduleItem.auditorium_list.number && scheduleItemDayOfWeek === day && scheduleItem.number === lesson) {
+                    let weeks = getWeeks(scheduleItem.firstDate, scheduleItem.lastDate, scheduleItem.period);
+                    let filteredWeeks = weeks.filter(week => week % 2 === weekType % 2);
+                    if (filteredWeeks.length > 0) {
+                        // Проверяем, есть ли уже группа в cellContent
+                        let groupExists = cellContent.some(content => content.props.children.includes(scheduleItem.group_list.name));
+                        if (!groupExists) {
+                            cellContent.push(<div key={scheduleItem.id}>{`${scheduleItem.group_list.name} ${scheduleItem.discipline_list.short_name} (${filteredWeeks.join(', ')})`}</div>);
+                        }
                     }
                 }
             }
+
         }
         return cellContent;
     }
