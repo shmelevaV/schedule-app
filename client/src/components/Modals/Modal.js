@@ -396,7 +396,7 @@ const EditCellModal = ({
                             .filter((lesson) => (lesson.teacherListId == selectedTeacher))
                             .map((lesson) => [lesson.discipline_list.short_name, lesson])
                         ).values()].map((lesson) => (
-                            <option key={lesson.id} value={lesson.id}>
+                            <option key={lesson.id} value={disciplines.find(el => (el.short_name === lesson.discipline_list.short_name)).id}>
                             {lesson.discipline_list.short_name}
                             </option>
                         ))}
