@@ -65,10 +65,11 @@ const Auth = observer (() =>{
             onChange={e => setPassword(e.target.value)}
             type="password"
         />
+        // вот тут
         <Row className="mt-3">
             {isLogin ?
                     <Col>
-                        <NavLink to={REGISTRATION_ROUTE}>Зарегистрируйтесь</NavLink>, если у вас нет аккаунта.
+                        <NavLink to={REGISTRATION_ROUTE}>Зарегистрируйтесь</NavLink>, если у вас нет аккаунта. 
                     </Col>
                     :
                     <Col>
