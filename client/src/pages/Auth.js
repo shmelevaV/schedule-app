@@ -65,7 +65,6 @@ const Auth = observer (() =>{
             onChange={e => setPassword(e.target.value)}
             type="password"
         />
-        //леша, помоги 
         <Row className="mt-3">
             {isLogin ?
                     <Col>
@@ -77,7 +76,7 @@ const Auth = observer (() =>{
                     </Col>
 
             }
-
+//леша, помоги 
             <Col className="d-flex justify-content-end">
                 <Button 
                 variant={"outline-success"}
