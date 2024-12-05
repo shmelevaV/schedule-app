@@ -62,7 +62,7 @@ const Auth = observer (() =>{
             className="mt-3"
             placeholder="Введите ваш пароль"
             value = {password}
-            onChange={e => setPassword(e.target.value)}
+            onChange={e => setPassword(e.target.value)} //лешааааа
             type="password"
         />
         <Row className="mt-3">
