@@ -76,7 +76,7 @@ const Auth = observer (() =>{
                     </Col>
 
             }
-//леша, помоги 
+
             <Col className="d-flex justify-content-end">
                 <Button 
                 variant={"outline-success"}
