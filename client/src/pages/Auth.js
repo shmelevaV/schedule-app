@@ -68,7 +68,7 @@ const Auth = observer (() =>{
         <Row className="mt-3">
             {isLogin ?
                     <Col>
-                        <NavLink to={REGISTRATION_ROUTE}>ВОТ ТУТ Зарегистрируйтесь</NavLink>, если у вас нет аккаунта. 
+                        <NavLink to={REGISTRATION_ROUTE}>Зарегистрируйтесь</NavLink>, если у вас нет аккаунта. Леша, помоги!!!
                     </Col>
                     :
                     <Col>
